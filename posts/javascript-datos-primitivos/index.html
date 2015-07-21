@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: datos primitivos | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-datos-primitivos">JavaScript: datos primitivos</h1>
+<p>En JavaScript hay cinco tipos de datos primitivos: <code>undefined</code>, <code>null</code>, <code>number</code>, <code>boolean</code> y <code>string</code>. Los tipos primitivos <code>boolean</code>, <code>number</code> y <code>string</code> tienen constructores para crear objetos de ese tipo.</p>
+<p>Si se usan los constructores de los tipos primitivos, lo que se obtiene es un objeto. Si se usa un tipo primitivo se obtiene un dato del tipo primitivo que corresponda.</p>
+<pre><code>typeof 1; // &#39;number&#39;
+typeof new Number(1); // &#39;object&#39;
+typeof true; // &#39;boolean&#39;
+typeof new Boolean(true); // &#39;object&#39;
+typeof &#39;hello&#39;; // &#39;string&#39;
+typeof new String(&#39;hello&#39;); // &#39;string&#39;
+</code></pre><p>Las comparaciones de igualdad con datos primitivos funcionan como se espera. Devuelven <code>true</code> como resultado si el valor primitivo es el mismo y <code>false</code> si no lo es. Al comparar dos objetos creados con constructores primitivos, la comparación siempre da como resultado <code>false</code> a menos que sean el mismo objeto. Esto es porque lo que en realidad se están comparando las referencias de cada objeto en vez de sus valores.</p>
+<pre><code>// datos primitivos
+var x = &#39;hello&#39;;
+var y = &#39;hello&#39;;
+
+x == y; // true
+x === y; // true
+
+// objetos
+var x = new String(&#39;hello&#39;);
+var y = new String(&#39;hello&#39;);
+
+x == y; // false
+x === y; // false
+</code></pre><p>Usando los datos primitivos, se pueden usar los métodos asociados a los constructores de su tipo. Por ejemplo, <code>toLowerCase</code> es un método de los objetos de tipo string, pero también se puede usar en datos primitivos de tipo string.</p>
+<pre><code>var x = &#39;HELLO&#39;;
+x.toLowerCase(); // new String(&#39;HELLO&#39;).toLowerCase() -&gt; &#39;hello&#39;
+</code></pre><p>Lo que pasa en este caso es que el string se convierte a un objeto <code>String</code>. Se usa el método sobre el objeto <code>String</code> y se elimina para que lo limpie el recolector de basura.</p>
+<p>Cuando se usan datos primitivos y se intenta asignar alguna propiedad a uno de ellos, pasa igual que cuando se usa algún método en un tipo primitivo. Se crea un objeto nuevo al que se le asigna la propiedad y después se elimina para que lo limpie el recolector de basura.</p>
+<pre><code>var x = 1;
+x.newProperty = 2; // new Number(1).newProperty = 2
+x.newProperty; // new Number(1).newProperty -&gt; undefined
+</code></pre><p>Si se usa el modo estricto la asignación de propiedades a datos primitivos lanza un error.</p>
+<pre><code>&#39;use strict&#39;;
+var x = 1;
+x.newProperty = 2; // error
+</code></pre><h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/">https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: cómo usar el modo estricto | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-c-mo-usar-el-modo-estricto">JavaScript: cómo usar el modo estricto</h1>
+<p>El modo estricto desactiva funcionalidades perjudiciales y hace que el intérprete lance errores al usar código que puede dar problemas.</p>
+<p>El modo estricto de JavaScript se puede activar escribiendo el string <code>&#39;use strict&#39;;</code>. La ventaja de usar un string es que en compiladores antiguos de JavaScript, este string no dará ningún error, simplemente evaluará la expresión y continuará de forma normal.</p>
+<p>Este modo se puede usar de forma global, colocándo el string al inicio del programa JavaScript.</p>
+<pre><code>&#39;use strict&#39;;
+function f1() {
+  // usa el modo estricto
+}
+
+function f2() {
+  // también usa el modo estricto
+}
+</code></pre><p>También se puede colocar el string al inicio de una función para usar el modo estricto sólo en esa función.</p>
+<pre><code>function f1() {
+  &#39;use strict&#39;;
+  // usa el modo estricto
+}
+
+function f2() {
+  // no usa el modo estricto
+}
+</code></pre><p>Para usarlo en varias funciones sin tener que escribir el string en cada una de ellas, se puede utilizar el modo estricto en una IIFE.</p>
+<pre><code>(function() {
+  &#39;use strict&#39;;
+  function f1() {
+    // usa el modo estricto
+  }
+
+  function f2() {
+    // también usa el modo estricto
+  }
+})();
+</code></pre><p>La mejor forma de usar el modo estricto es dentro de una IIFE. Utilizándolo de esta forma, se evita que al concatenar varios archivos JavaScript se active el modo estricto en lugares donde no se quiere usar. O que no se active en lugares donde sí se quiere usar. Por ejemplo si el primer archivo de los que se concatenan usa el modo estricto, también se activará para los demás archivos.</p>
+<pre><code>// archivo1.js
+&#39;use strict&#39;;
+function f1() {}
+
+// archivo2.js
+// no usa el modo estricto
+function f2() {
+  var arguments = []; // da un error aquí porque se ha activado el modo estricto en el primer archivo
+}
+</code></pre><p>Pero si el primer archivo no usa el modo estricto, los demás archivos tampoco lo tendrán activado.</p>
+<pre><code>// archivo2.js
+// no usa el modo estricto
+function f2() {
+  var arguments = [];
+}
+
+// archivo1.js
+// en este archivo, al estar concatenado con el anterior, el modo estricto no está activo
+&#39;use strict&#39;;
+function f1() {}
+</code></pre><p>Para evitar estos problemas, la mejor forma de usarlo es dentro de una IIFE.</p>
+<pre><code>// archivo1.js
+(function() {
+  &#39;use strict&#39;;
+  // todo el código de esta IIFE se ejecutará en modo estricto
+  function f1() {}
+})();
+
+// archivo2.js
+(function() {
+  // este código no se ejecutará en modo estricto
+  function f2() {
+    var arguments = [];
+  }
+)();
+</code></pre><p>De esta forma al estar todo el código de cada archivo dentro de una IIFE, el modo estricto se puede usar de forma independiente para cada uno de ellos. Lo único que hay que tener en cuenta cuando se usa este método, es que el código de cada archivo no se va a ejecutar en el ámbito global, si no en el ámbito local de la IIFE.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode</a></li>
+<li><a href="https://docs.webplatform.org/wiki/javascript/directives/use_strict">https://docs.webplatform.org/wiki/javascript/directives/use_strict</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

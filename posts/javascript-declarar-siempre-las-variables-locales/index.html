@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: declarar siempre las variables locales | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-declarar-siempre-las-variables-locales">JavaScript: declarar siempre las variables locales</h1>
+<p>En JavaScript es fácil crear variables globales por accidente. Si se usa una variable sin declarar dentro de una función, se estará usando una variable global. En estos casos el intérprete de JavaScript crea o modifica la variable global silenciosamente, sin lanzar ningún error o aviso.</p>
+<pre><code>function suma(a, b) {
+  total = 0; // global
+  total = a + b;
+  return total;
+}
+</code></pre><p>En el ejemplo anterior, la variable <code>total</code> se está creando como global. Esto pasa porque se ha declarado sin usar la palabra clave <code>var</code> que la declararía como local en el ámbito de la función.</p>
+<pre><code>function suma(a, b) {
+  var total = 0; // local
+  total = a + b;
+  return total;
+}
+</code></pre><p>La creación de variables globales de forma intencioanada se considera una mala práctica. Pero cuando se crea o modifica una variable global sin intención, puede dar problemas en la ejecución del programa. Normalmente estos errores son los más complicados de depurar.</p>
+<p>Para evitar estos problemas se usan herramientas de análisis de código que se llaman <em>linters</em>. Los <em>linters</em> permiten definir qué variables globales usa nuestro código y otros parámetros avanzados. Los <em>linters</em> para JavaScript más conocidos son <a href="http://eslint.org/">eslint</a>, <a href="http://jshint.com/">jshint</a> y <a href="http://www.jslint.com/">jslint</a>. Es recomendable el uso de alguna de estas herramientas para evitar los errores más comunes y malas prácticas cuando se escribe código.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
