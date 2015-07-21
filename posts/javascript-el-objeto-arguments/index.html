@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: el objeto arguments | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-el-objeto-arguments">JavaScript: el objeto arguments</h1>
+<p>El objeto <code>arguments</code> es una variable local que tienen todas las funciones. Este objeto contiene todos los argumentos que se han pasado a la función, incluso los que no se han declarado como parámetros. Es un objeto parecido a un array, pero no es un objeto de tipo array. Lo que comparte con los arrays es que se accede a sus elementos usando un índice numérico que empieza en <code>0</code> y una propiedad <code>length</code> para saber cuántos elementos tiene.</p>
+<p>El objeto <code>arguments</code> se puede usar para crear funciones con un número indeterminado de parámetros.</p>
+<pre><code>function getTotalPoints() {
+  var total = 0;
+
+  for (var i = 0, len = arguments.length; i &lt; len; i++) {
+    total += arguments[i];
+  }
+
+  return total;
+}
+
+getTotalPoints(31, 23, 15, 44, 22); // 135
+getTotalPoints(25, 17, 31); // 73
+</code></pre><p>La función <code>getTotalPoints</code> no tiene ningún parámetro definido. Usa el objeto <code>arguments</code> para recoger cualquier número de argumentos que se le pasen y operar con ellos.</p>
+<p>Se puede método <code>apply</code> que tienen todas las funciones, para usar un array como argumento de la función. El ejemplo anterior usando <code>apply</code> quedaría así.</p>
+<pre><code>var player1Points = [31, 23, 15, 44, 22];
+var player2Points = [25, 17, 31];
+
+function getTotalPoints() {
+  var total = 0;
+
+  for (var i = 0, len = arguments.length; i &lt; len; i++) {
+    total += arguments[i];
+  }
+
+  return total;
+}
+
+getTotalPoints.apply(null, player1Points); // 135
+getTotalPoints.apply(null, player2Points); // 73
+</code></pre><p>Aunque el objeto <code>arguments</code> no sea un array, se puede convertir en un objeto de este tipo si se necesita usar alguno de sus métodos. Una forma de hacerlo es llamando al método <code>slice</code> del objeto <code>Array</code>. Cuando se llama al método <code>slice</code> sin argumentos, crea una copia del array que llama al método.</p>
+<pre><code>function getTotalPoints() {
+  var total = 0;
+  var args = Array.prototype.slice.call(arguments);
+
+  for (var i = 0, len = args.length; i &lt; len; i++) {
+    total += args[i];
+  }
+
+  return total;
+}
+</code></pre><p>En este ejemplo la función <code>getTotalPoints</code> crea un array a partir del objeto <code>arguments</code>. Como el objeto <code>arguments</code> no es un array, hay que llamar al método <code>slice</code> del prototipo del objeto <code>Array</code> asignándole <code>arguments</code> como <code>this</code>.</p>
+<p>Usar el método <code>slice</code> en el objeto <code>arguments</code> puede provocar problemas de rendimiento en algunos intérpretes de JavaScript. Para evitar esto, se puede crear un nuevo array iterando sobre todos los elementos de <code>arguments</code> usando un bucle.</p>
+<pre><code>function createArrayFromArguments(args) {
+  var len = args.length;
+  var trueArray = new Array(len);
+
+  for (var i = 0; i &lt; len; i++) {
+    trueArray[i] = args[i];
+  }
+
+  return trueArray;
+}
+
+function getTotalPoints() {
+  var total = 0;
+  var args = createArrayFromArguments(arguments);
+
+  for (var i = 0, len = args.length; i &lt; len; i++) {
+    total += args[i];
+  }
+
+  return total;
+}
+</code></pre><p>La función <code>createArrayFromArguments</code> recibe el objeto <code>arguments</code> de otra función y lo devuelve transformado en array. Para hacer la transformación usa el constructor de arrays y le pasa el número de elementos que tiene el parámetro <code>args</code>. Después recorre todos los elementos del parámetro <code>args</code> asignándoselos a la variable <code>trueArray</code>, que es la que devuelve.</p>
+<p>Hay que evitar modificar el objeto <code>arguments</code>, porque en algunos motores de JavaScript, si se modifica algún elemento de <code>arguments</code>, también se modifica el parámetro al que representa.</p>
+<pre><code>function getTotalPoints(playerName) {
+  var total = 0;
+
+  arguments[0] = 0;
+
+  for (var i = 0, len = arguments.length; i &lt; len; i++) {
+    total += arguments[i];
+  }
+
+  return playerName + &#39;: &#39; + total + &#39; points&#39;;
+}
+
+getTotalPoints(&#39;Kevin Durant&#39;, 31, 23, 15, 44, 22); // &#39;0: 135 points&#39;
+</code></pre><p>Esto pasa porque <code>arguments</code> no es una copia de los parámetros de la función. En realidad, los parámetros comparten la referencia de los elementos de <code>arguments</code>. Se puede evitar esto si se usa el modo estricto dentro de la función. En este caso los parámetros no compartirán la referencia con los elementos de <code>arguments</code>.</p>
+<p>Para evitar estos problemas cuando se vaya a modificar el objeto <code>arguments</code>, es mejor convetirlo antes en un array.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments">https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+<li><a href="http://www.amazon.es/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742/">Javascript: The good parts</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

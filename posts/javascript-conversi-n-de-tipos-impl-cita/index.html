@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: conversión de tipos implícita | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-conversi-n-de-tipos-impl-cita">JavaScript: conversión de tipos implícita</h1>
+<h2 id="conversi-n-en-operaciones-matem-ticas">Conversión en operaciones matemáticas</h2>
+<p>En JavaScript los operadores matemáticos <code>-</code>, <code>*</code>, <code>/</code> y <code>%</code> siempre intentan convertir los datos con los que operan al tipo numérico.</p>
+<pre><code>10 - &#39;1&#39;; // 9
+&#39;5&#39; * &#39;6&#39;; // 30
+&#39;4&#39; / 2; // 2
+&#39;5&#39; % &#39;2&#39;; // 1
+</code></pre><p>El único operador matemático que no tiene este comportamiento, es el de suma <code>+</code>. Esto pasa porque este operador está sobrecargado para que a parte de sumar números, permita concatenar strings. Al intentar sumar un número y un string convierte el número a string y concatena los dos valores, al contrario que pasa con el resto de operadores matemáticos.</p>
+<pre><code>7 + 1; // 8
+&#39;7&#39; + &#39;1&#39;; // &#39;71&#39;
+7 + &#39;1&#39;; // &#39;71&#39;
+</code></pre><p>Este comportamiento del operador <code>+</code>, puede provocar algunos resultados inesperados cuando se suman varios valores de distinto tipo. En estos casos, JavaScript hará las operaciones de izquierda a derecha.</p>
+<pre><code>1 + 1 + &#39;2&#39;; // &#39;22&#39;
+1 + &#39;1&#39; + &#39;2&#39;; // &#39;112&#39;
+1 + &#39;1&#39; + 2; // &#39;112&#39;
+</code></pre><h2 id="el-valor-nan-">El valor <code>NaN</code></h2>
+<p>El valor <code>NaN</code> hace que cualquier operación matemática en la que se use, de como resultado <code>NaN</code>. Este valor también se puede obtener al operar con el valor <code>undefined</code>. El valor <code>NaN</code> es el único en JavaScript que no es igual a sí mismo.</p>
+<pre><code>NaN == NaN; // false
+NaN === NaN; // false
+</code></pre><p>JavaScript tiene la función <code>isNaN</code> que nos dice si el valor que se le pasa como argumento es <code>NaN</code>. El problema con esta función es que puede dar falsos positivos. Lo que hace es intentar convertir a valor numérico el parámetro que recibe. Por lo que en realidad en vez de comprobar si el valor es <code>NaN</code>, comprueba si el valor <em>no</em> se puede convertir a número.</p>
+<pre><code>isNaN(NaN); // true, es NaN
+isNaN(&#39;hola&#39;); // true, es NaN
+isNaN(&#39;1&#39;); // false, no es NaN
+isNaN(7); // false, no es NaN
+</code></pre><p>Una forma más segura de saber si un valor es realmente <code>NaN</code>, es comprobar que no es igual a sí mismo.</p>
+<pre><code>var w = NaN;
+w !== w; // true, es NaN
+
+var x = 1;
+x !== x; // false, no es NaN
+
+var y = &#39;hola&#39;;
+y !== y; // false, no es NaN
+
+var z = null;
+z !== z; // false, no es NaN
+</code></pre><h2 id="conversi-n-de-objetos">Conversión de objetos</h2>
+<p>Los objetos también pueden ser convertidos en datos de otro tipo. Todos los objetos tienen el método <code>toString</code> para obtener una representación del objeto en forma de string. También tienen el método <code>valueOf</code> que está pensado para que devuelva una representación numérica del objeto.</p>
+<p>Cuando se usa algún objeto en una operación matemática, JavaScript llama siempre a su método <code>valueOf</code>. Se llama siempre a este método incluso cuando se usa el operador <code>+</code> para concatenar un string con un objeto. Se puede controlar lo que devuelve un objeto al llamar a su método <code>valueOf</code> sobrescribiéndolo.</p>
+<pre><code>var x = { valueOf: function() { return 2; } };
+x.valueOf(); // 2
+x + &#39;1&#39;; // &#39;21&#39;
+x + 1; // 3
+x * 3; // 6
+</code></pre><p>Cuando un objeto se usa en una operación matemática y su método <code>valueOf</code> no se ha sobrescrito, JavaScript utiliza el método <code>toString</code> del objeto. Por eso casi siempre que se intenta hacer alguna operación matemática con un objeto, se obtiene el string <code>&#39;[object Object]&#39;</code> como valor.</p>
+<pre><code>var x = {};
+x + 1; // &#39;[object Object]1&#39;
+x + &#39;1&#39;; // &#39;[object Object]1&#39;
+x + &#39;example&#39;; // &#39;[object Object]example&#39;
+x * &#39;1&#39;; // NaN
+x * 1; // NaN
+</code></pre><h2 id="conversi-n-a-booleano">Conversión a booleano</h2>
+<p>Cuando se hace una comprobación para saber si un valor es verdadero o falso, JavaScript interpreta la mayoría de los valores como verdaderos. Lo únicos valores que se interpretan como falsos son: <code>false</code>, <code>0</code>, <code>-0</code>, <code>&#39;&#39;</code>, <code>null</code>, <code>undefined</code> y <code>NaN</code>.</p>
+<p>Teniendo esto en cuenta, no se pueden hacer evaluaciones fiables comprobando si el valor es interpretado como verdadero o falso. Un ejemplo donde podría haber un comportamiento extraño es el siguiente:</p>
+<pre><code>function getPoint(x, y) {
+  if (!x) {
+    x = 100;
+  }
+
+  if (!y) {
+    y = 100;
+  }
+
+  return { x: x, y: y };
+}
+
+getPoint(0, 256); // { x: 100, y: 256 }
+</code></pre><p>Como el valor <code>0</code> es interpretado como falso, usando la función <code>getPoint</code>, no se puede obtener un punto con alguna coordenada que tenga el valor <code>0</code>. Es más seguro comprobar si el tipo de dato del parámetro es <code>undefined</code> que comprobar si se interpreta como falso.</p>
+<pre><code>function getPoint(x, y) {
+  if (typeof x === &#39;undefined&#39;) {
+    x = 100;
+  }
+
+  if (typeof y === &#39;undefined&#39;) {
+    y = 100;
+  }
+
+  return { x: x, y: y };
+}
+
+getPoint(0, 256); // { x: 0, y: 256 }
+getPoint(); // { x: 100, y: 100 }
+</code></pre><p>Otra forma de saber si un dato es <code>undefined</code>, es comparando directamente con el valor <code>undefined</code>:</p>
+<pre><code>if (x === undefined) { /* ... */ }
+</code></pre><h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
