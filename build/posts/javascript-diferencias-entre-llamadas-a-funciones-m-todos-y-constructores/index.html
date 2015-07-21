@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: diferencias entre llamadas a funciones, métodos y constructores | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-diferencias-entre-llamadas-a-funciones-m-todos-y-constructores">JavaScript: diferencias entre llamadas a funciones, métodos y constructores</h1>
+<p>Las funciones de JavaScript se pueden llamar de tres formas distintas. Como funciones normales, como métodos y como constructores.</p>
+<p>El uso más común es el de llamarlas como funciones.</p>
+<pre><code>function f(x, y) {
+  return x + y;
+}
+
+f(1, 2); // 3
+</code></pre><p>Este caso de uso es el más simple. Lo único que hace es llamar a la función <code>f</code>, pasándole como argumentos los valores <code>1</code> y <code>2</code> que se enlazarán con los parámetros <code>x</code> e <code>y</code> de la función.</p>
+<p>Los métodos son funciones que se asignan como propiedad de un objeto. Las funciones se pueden asignar como métodos usando expresiones de función o pasándo la referencia de una función ya declarada.</p>
+<pre><code>var player = {
+  getName: function() {
+    return this.name;
+  },
+
+  name: &#39;Kevin Durant&#39;
+}
+
+player.getName(); // &#39;Kevin Durant&#39;
+</code></pre><p>El objeto <code>this</code> en los métodos no siempre se refiere al objeto en el que están declarados. La expresión en la que se llama al método determina a qué objeto se enlaza <code>this</code>. Dos objetos distintos pueden usar la misma función como método y tener resultados distintos dependiendo de sus propiedades.</p>
+<pre><code>var player1 = {
+  getName: function() {
+    return this.name;
+  },
+
+  name: &#39;Kevin Durant&#39;
+}
+
+var player2 = {
+  getName: player1.getName,
+
+  name: &#39;Stephen Curry&#39;
+};
+
+player1.getName(); // &#39;Kevin Durant&#39;
+player2.getName(); // &#39;Stephen Curry&#39;
+</code></pre><p>Cuando se ejecuta la expresión <code>player1.getName()</code>, el intérprete busca la propiedad <code>getName</code> dentro del objeto <code>player1</code>. Depués de encontrar la propiedad, la llama como una a función normal pero enlazando <code>this</code> al objeto <code>player1</code>. Al ejecutar la expresión <code>player2.getName()</code>, hace lo mismo que con <code>player1.getName()</code>, pero enlaza <code>this</code> con <code>player2</code>.</p>
+<p>El ejemplo anterior también se puede escribir así.</p>
+<pre><code>function getName() {
+  return this.name;
+}
+
+var player1 = {
+  getName: getName,
+  name: &#39;Kevin Durant&#39;
+}
+
+var player2 = {
+  getName: getName,
+  name: &#39;Stephen Curry&#39;
+};
+
+player1.getName(); // &#39;Kevin Durant&#39;
+player2.getName(); // &#39;Stephen Curry&#39;
+</code></pre><p>Si varios objetos van a compartir la misma función, puede ser más eficiente escribir el código de esta forma, porque el intérprete sólo tiene que guardar una referencia del método <code>getName</code>. Pero si se llama al método <code>getName</code> como una función normal, dará resultados inesperados, porque en este caso <code>this</code> estará enlazado con el objeto global.</p>
+<pre><code>function getName() {
+  return this.name;
+}
+
+getName(); // undefined
+</code></pre><p>La última forma de llamar a una función es como un constructor usando el operador <code>new</code>. Cuando se usa una función como constructor, el valor que tíene <code>this</code> es un objeto nuevo y devuelve este mismo objeto como resultado.</p>
+<pre><code>function Player(name) {
+  this.name = name;
+}
+
+var player1 = new Player(&#39;Kevin Durant&#39;);
+var player2 = new Player(&#39;Stephen Curry&#39;);
+
+player1.name; // &#39;Kevin Durant&#39;
+player2.name; // &#39;Stephen Curry&#39;
+</code></pre><p>Si se llama como una función normal a una función que está pensada para ser usada como constructor, el valor de <code>this</code> estará enlazado al objeto global. Por lo al asignar propiedades a <code>this</code>, en realidad se estarán asignando al objeto global. Esto puede hacer que se sobrescriban variables globales o se creen algunas nuevas que no queremos.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

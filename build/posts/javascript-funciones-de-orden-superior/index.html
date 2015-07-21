@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Javascript: funciones de orden superior | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-funciones-de-orden-superior">Javascript: funciones de orden superior</h1>
+<p>Las funciones de orden superior son funciones que toman a otras funciones como argumento o devuelven una función como resultado. Donde más se usa este tipo de funciones es en los lenguages funcionales. Las funciones que se pasan como argumentos a otra función se llaman <code>callbacks</code>.</p>
+<p>Un ejemplo de función de orden superior es el método <code>forEach</code> de los objetos de tipo array.</p>
+<pre><code>var numbers = [1, 2, 3];
+
+function sumOneAndLog(n) {
+  n += 1;
+  console.log(n);
+}
+
+numbers.forEach(sumOneAndLog);
+// -&gt; 2
+// -&gt; 3
+// -&gt; 4
+</code></pre><p>El método <code>forEach</code> recibe como argumento una función a la que llama, pasándole como argumentos cada uno de los elementos del array.</p>
+<p>Las funciones de orde superior también aceptan funciones anónima como argumentos. El ejemplo anterior se puede rescribir de la siguiente forma.</p>
+<pre><code>var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+numbers.forEach(function(n) {
+  n += 1;
+  console.log(n);
+});
+// -&gt; 2
+// -&gt; 3
+// -&gt; 4
+</code></pre><p>Usando funciones de orden superior se pueden abstraer patrones repetitivos en nuestro código, como los bucles.</p>
+<pre><code>function repeat(n, callback) {
+  for (var i = 0; i &lt; n; i++) { callback(i); }
+}
+
+repeat(3, function(n) {
+  console.log(n);
+});
+// -&gt; 0
+// -&gt; 1
+// -&gt; 2
+</code></pre><p>Estas funciones también se pueden usar para crear otras funciones. Cuando una función de orden superior devuelve otra función, normalmente lo que devuelve es una closure.</p>
+<pre><code>function add(x) {
+  return function(y) {
+    return x + y;
+  }
+}
+
+var add3 = add(3);
+add3(4); // 7
+</code></pre><p>Este paradigma de programación es beneficioso para reducir el código duplicado y su complejidad. También facilita el mantenimiento porque se basa en funciones pequeñas que sólo hacen una cosa. Si se encuentra algún error en código que sigue este paradigma, sólo habrá que corregirlo en una función que normalmente será muy simple.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://eloquentjavascript.net/05_higher_order.html">http://eloquentjavascript.net/05_higher_order.html</a></li>
+<li><a href="http://javascriptissexy.com/understand-javascript-callback-functions-and-use-them">http://javascriptissexy.com/understand-javascript-callback-functions-and-use-them/#more-1037</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

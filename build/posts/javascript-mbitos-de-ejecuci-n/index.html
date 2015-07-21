@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: ámbitos de ejecución | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-mbitos-de-ejecuci-n">JavaScript: ámbitos de ejecución</h1>
+<p>Los bloques en JavaScript, como los <code>for</code> o los <code>if</code>, no crean nuevos ámbitos de ejecución. Sólo las funciones crean nuevos ámbitos. JavaScript funciona con ámbitos de ejecución a nivel de función en vez de a nivel de bloque.</p>
+<pre><code>function f() {
+  var x = &#39;testing&#39;;
+
+  x; // &#39;testing&#39;
+
+  if (x === &#39;testing&#39;) {
+    var x = &#39;probando&#39;;
+    x; // &#39;probando&#39;
+  }
+
+  x; // &#39;probando&#39;
+}
+</code></pre><p>Si se necesita tener un ámbito de ejecución a nivel de bloque, una solución es usar una IIFE.</p>
+<pre><code>function f() {
+  var x = &#39;testing&#39;;
+  x; // &#39;testing&#39;
+
+  if (x === &#39;testing&#39;) {
+    (function() {
+      var x = &#39;probando&#39;;
+      x; // &#39;probando&#39;
+    })();
+  }
+
+  x; // &#39;testing&#39;
+}
+</code></pre><p>Usando una IIFE dentro del bloque <code>if</code>, se consigue crear un nuevo ámbito de ejecución para ese bloque. Las IIFE presentan una forma mmuy flexible y potente de crear ámbitos de ejecución.</p>
+<p>Otra característica muy potente de las IIFE es la posibilidad de pasarles argumentos del ámbito superior. Estos argumentos se pueden usar para crear una closure dentro de la IIFE que recuerde el parámetro que recibió esta.</p>
+<pre><code>var x, y;
+
+function f1() {
+  var result = [];
+
+  for (var i = 0; i &lt; 10; i++) {
+      result.push(function() { return i; });
+  }
+
+  return result;
+}
+x = f1();
+x[0]; // 11
+x[1]; // 11
+
+function f2() {
+  var result = [];
+
+  for (var i = 0; i &lt; 10; i++) {
+    (function(index) {
+      result.push(function() { return index; });
+    })(i);
+  }
+
+  return result;
+}
+y = f2();
+y[0]; // 0
+y[1]; // 1
+</code></pre><p>El valor que recuerdan las closures de <code>f1</code> es el de <code>i</code>, que es para todas la misma variable y al salir del bucle vale 11. El valor que recuerdan las closures de <code>f2</code> es el del parámetro que recibe la IIFE, que es distinto para cada closure.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html">http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

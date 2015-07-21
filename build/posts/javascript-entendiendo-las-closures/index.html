@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: entendiendo las closures | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-entendiendo-las-closures">JavaScript: entendiendo las closures</h1>
+<p>Las closures son funciones que recuerdan el ámbito de ejecución en el que se han creado. Pueden usar variables definidas en una función que contiene a la función closure.</p>
+<pre><code>function addThree(x) {
+  function add(y) {
+    return x + y;
+  }
+  return add(3);
+}
+
+addThree(5); // 8
+addThree(3); // 6
+</code></pre><p>La función <code>add</code> es una closure que puede usar las variables y parámetros que están definidos en la función exterior <code>addThree</code>.</p>
+<p>Las closures pueden usar las variables y parámetros de los ámbitos de ejecución de las funciones que las contienen aunque estas ya hayan devuelto un resultado. Desde una función, se puede devolver una función closure para usarla más tarde. Esta closure, puede seguir usando las variables y parámetros de la función que la ha devuelto.</p>
+<pre><code>function addThree() {
+  var x = 3;
+  function add(y) {
+    return x + y;
+  }
+  return add;
+}
+
+var myAddThree = addThree();
+myAddThree(5); // 8
+myAddThree(3); // 6
+</code></pre><p>La función <code>addThree</code> devuelve la closure <code>add</code>. Al asignar el valor devuelto por <code>addThree</code> a la variable <code>myAddThree</code>, esta variable contiene a la función <code>add</code>. Aunque la función <code>addThree</code> ya ha devuelto un resultado, la closure sigue recordando el valor de <code>x</code>.</p>
+<p>Las closures también se pueden usar como expresiones de función. Las expresiones de función son funciones anónimas. Puede ser útil usar esto cuando una función va a devolver una closure para ser usada más tarde.</p>
+<pre><code>function addThree() {
+  var x = 3;
+  return function(y) {
+    return x + y;
+  }
+}
+
+var myAddThree = addThree();
+myAddThree(5); // 8
+myAddThree(3); // 6
+</code></pre><p>La función <code>addThree</code> es igual que la del ejemplo anterior. La única diferencia es que la función que devuelve es anónima. En este ejemplo es válido devolver una función anónima, porque <code>addThree</code> no necesita saber el nombre de la función que va a devolver.</p>
+<p>Las closures almacenan la referencia de las variables de la función en la que se declaran en vez de copiar su valor. Los cambios que se hagan sobre las variables de su ámbito superior son visibles para todas las closures que están en ese ámbito.</p>
+<pre><code>function counter() {
+  var x = 0;
+  return {
+    add: function() { x++; },
+    subtract: function() { x--; },
+    getValue: function() { return x; }
+  };
+}
+
+var i = counter();
+i.getValue(); // 0
+i.add();
+i.getValue(); // 1
+i.subtract();
+i.getValue(); // 0
+</code></pre><p>La función <code>counter</code> devuelve un objeto con tres closures: <code>add</code>, <code>subtract</code> y <code>getValue</code>. Las tres closures comparten el acceso a la variable <code>x</code>. Los cambios que hace la closure <code>add</code> a <code>x</code>, se pueden ver reflejados en las funciones <code>subtract</code> y <code>getValue</code>.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

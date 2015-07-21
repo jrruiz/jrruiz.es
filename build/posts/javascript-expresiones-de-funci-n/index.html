@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: expresiones de función | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-expresiones-de-funci-n">JavaScript: expresiones de función</h1>
+<p>Las expresiones de función son muy parecidas a las declaraciones de función. Una de las diferencias que hay, es que en las expresiones de función se puede omitir el nombre para crear funciones anónimas.</p>
+<pre><code>var f = function() {
+  return &#39;Hello&#39;;
+};
+</code></pre><p>Las expresiones de función también se pueden crear con un nombre. Este nombre sólo se puede usar en el interior de la propia función. Crear estas funciones con nombre puede ser útil para usarlas de forma recursiva. También se pueden usar para seguir la pila de llamadas cuando se hace debug.</p>
+<pre><code>var f = function addUpTo(x) {
+  var prev = x - 1;
+
+  if (prev == 0) {
+    return x;
+  }
+
+  return x + addUpTo(prev);
+};
+</code></pre><p>A las expresiones de función no les afecta el hoisting. Si se está asignando la función a una variable, la declaración de la variable sí  se moverá a la parte superior de su ámbito, pero la asignación de la función se mantiene en su sitio.</p>
+<pre><code>f1(); // error
+f2(); // &#39;Hello&#39;
+
+var f1 = function() { return &#39;Hello&#39;; };
+function f2() { return &#39;Hello&#39;; }
+</code></pre><h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
