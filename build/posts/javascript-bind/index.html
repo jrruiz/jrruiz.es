@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: bind | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-bind">JavaScript: bind</h1>
+<p>Todas las funciones tienen el método <code>bind</code>. Este método crea una nueva función con el mismo cuerpo que la función original. El objeto <code>this</code> de la nueva función es igual que el primer argumento que se le pasa a <code>bind</code>.</p>
+<p>También se pueden crear aplicaciones parciales de la función en la que se ejecuta <code>bind</code>. La aplicación parcial de una función convierte una función con múltiples parámetros en otra función con menos. La nueva función es igual que la anterior, pero tiene valores asignados en algunos parámetros. Al llamar a la nueva función, sólo hay que pasar los argumentos que no se hayan asignado desde <code>bind</code>.</p>
+<h2 id="asignar-this-">Asignar <code>this</code></h2>
+<p>El uso principal del método <code>bind</code> es el de arreglar la asignación del objeto <code>this</code> cuando se pasa una función como argumento a una función de orden superior.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+
+  points: [],
+
+  addPoints: function(pointsToAdd) {
+    this.points.push(pointsToAdd);
+  }
+}
+
+var scoredPoints = [25, 24, 32];
+
+scoredPoints.forEach(player.addPoints); // error: Cannot read property &#39;push&#39; of undefined
+player.points; // []
+</code></pre><p>El método <code>forEach</code> ejecuta el método <code>addPoints</code> con el objeto global como <code>this</code>. Como el objeto global no tiene una propiedad que se llame <code>points</code>, al llamar al método <code>push</code> de esta propiedad da un error. Se puede solucionar el error usando el método <code>bind</code> de <code>addPoints</code> para asignar el objeto <code>player</code> como <code>this</code>.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+
+  points: [],
+
+  addPoints: function(pointsToAdd) {
+    this.points.push(pointsToAdd);
+  }
+}
+
+var scoredPoints = [25, 24, 32];
+
+scoredPoints.forEach(player.addPoints.bind(player)); // error: Cannot read property &#39;push&#39; of undefined
+player.points; // [25, 24, 32]
+</code></pre><p>Al pasar el objeto <code>player</code> como argumento del método <code>bind</code> en <code>addPoints</code>, se consigue una función que es igual que <code>addPoints</code>, pero su objeto <code>this</code> es siempre <code>player</code>.</p>
+<p>Las funciones que se ejecutan como controlador de un evento o como callback de la función <code>setTimeout</code>, usan el objeto global como objeto <code>this</code>. Igual que en el ejemplo anterior, se usa el método <code>bind</code> para asignar el objeto <code>this</code>.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+
+  points: 0,
+
+  addOnePoint: function() {
+    this.points++;
+  },
+
+  addTwoPoints: function() {
+    this.points += 2;
+  },
+
+  addThreePoints: function() {
+    this.points += 3;
+  },
+
+  getTotalPoints: function() {
+    return alert(this.points);
+  }
+}
+
+var onePointButton = document.querySelector(&#39;#add-one-point&#39;);
+var twoPointsButton = document.querySelector(&#39;#add-two-points&#39;);
+var threePointsButton = document.querySelector(&#39;#add-three-points&#39;);
+
+onePointButton.addEventListener(&#39;click&#39;, player.addOnePoint.bind(player), true);
+twoPointsButton.addEventListener(&#39;click&#39;, player.addTwoPoints.bind(player), true);
+threePointsButton.addEventListener(&#39;click&#39;, player.addThreePoints.bind(player), true);
+
+setTimeout(player.getTotalPoints.bind(player), 5000);
+</code></pre><p>En este ejemplo todos los controladores de eventos y el callback de <code>setTimeout</code> reciben una función en la que su objeto <code>this</code> es <code>player</code>. Así cuando se ejecute alguna de esas funciones, se sumarán los puntos al jugador y al pasar cinco segundos, se muestra una alerta con los puntos que lleva acumulados <code>player</code>.</p>
+<h2 id="aplicaci-n-parcial-de-funciones-currying-">Aplicación parcial de funciones (<em>currying</em>)</h2>
+<p>Para crear una aplicación parcial de una función, hay que pasar al método <code>bind</code> dos o más argumentos. El primer argumento que se asigna a <code>bind</code> es siempre el objeto que se va a asignar como <code>this</code> en la función, los demás argumentos se asignan a los parámetros de la función sobre la que se ejecuta <code>bind</code>.</p>
+<p>El objeto <code>player</code> del ejemplo anterior se puede simplificar creando un sólo método <code>addPoints</code> que reciba un parámetro que es el número de puntos a sumar. Para usar función como controlador de cada botón, se hace <em>currying</em> del método <code>addPoints</code> asignando con los valores 1, 2 ó 3 a su parámetro <code>x</code>.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+
+  points: 0,
+
+  addPoints: function(x) {
+    this.points += x;
+  },
+
+  getTotalPoints: function() {
+    return alert(this.points);
+  }
+}
+
+var onePointButton = document.querySelector(&#39;#add-one-point&#39;);
+var twoPointsButton = document.querySelector(&#39;#add-two-points&#39;);
+var threePointsButton = document.querySelector(&#39;#add-three-points&#39;);
+
+var addOnePoint = player.addPoints.bind(player, 1);
+var addTwoPoints = player.addPoints.bind(player, 2);
+var addThreePoints = player.addPoints.bind(player, 3);
+
+onePointButton.addEventListener(&#39;click&#39;, addOnePoint, true);
+twoPointsButton.addEventListener(&#39;click&#39;, addTwoPoints, true);
+threePointsButton.addEventListener(&#39;click&#39;, addThreePoints, true);
+
+setTimeout(player.getTotalPoints.bind(player), 5000);
+</code></pre><p>Las funciones <code>addOnePoint</code>, <code>addTwoPoints</code> y <code>addThreePoints</code> son todas una copia del método <code>addPoints</code> del objeto <code>player</code>. En estas funciones se le asigna el objeto <code>player</code> como <code>this</code> y el número de puntos a sumar (1, 2 ó 3) se asigna como valor de su parámetro <code>x</code>. Lo que se obtiene es una función que no recibe ningún argumento.</p>
+<p>También se puede hacer <em>currying</em> de una función que no usa el objeto <code>this</code>. En estas funciones se asigna como objeto <code>this</code> el valor <code>null</code> o <code>undefined</code>. Si se asigna uno de estos dos valores, el objeto <code>this</code> de la función es el objeto global. Un ejemplo muy sencillo de este uso del <em>currying</em> es una función que suma dos valores.</p>
+<pre><code>function sum(x, y) {
+  return x + y;
+}
+
+var sum3 = sum.bind(null, 3);
+
+sum3(4); // 7
+</code></pre><p>Como la función <code>sum</code> no usa el objeto <code>this</code>, se puede asignar el valor <code>null</code> a este objeto. La variable <code>sum3</code> contiene la función resultante de hacer <em>currying</em> de <code>sum</code> con el valor 3 asignado a su parámetro <code>x</code>. La función que se obtiene como resultado acepta un parámetro y devuelve el resultado de sumarle 3.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind</a></li>
+<li><a href="https://docs.webplatform.org/wiki/javascript/Function/bind">https://docs.webplatform.org/wiki/javascript/Function/bind</a></li>
+<li><a href="https://msdn.microsoft.com/library/ff841995(v=vs.94">https://msdn.microsoft.com/library/ff841995(v=vs.94).aspx</a>.aspx)</li>
+<li><a href="http://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/">http://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/</a></li>
+<li><a href="http://dmitrysoshnikov.com/notes/note-1-ecmascript-bound-functions/">http://dmitrysoshnikov.com/notes/note-1-ecmascript-bound-functions/</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
