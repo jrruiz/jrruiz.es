@@ -137,7 +137,7 @@ Como la función `sum` no usa el objeto `this`, se puede asignar el valor `null`
 
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
 * [https://docs.webplatform.org/wiki/javascript/Function/bind](https://docs.webplatform.org/wiki/javascript/Function/bind)
-* [https://msdn.microsoft.com/library/ff841995(v=vs.94).aspx](https://msdn.microsoft.com/library/ff841995(v=vs.94).aspx)
+* [https://msdn.microsoft.com/library/ff841995](https://msdn.microsoft.com/library/ff841995)
 * [http://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/](http://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/)
 * [http://dmitrysoshnikov.com/notes/note-1-ecmascript-bound-functions/](http://dmitrysoshnikov.com/notes/note-1-ecmascript-bound-functions/)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)
