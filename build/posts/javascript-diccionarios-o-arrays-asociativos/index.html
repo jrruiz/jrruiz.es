@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: diccionarios o arrays asociativos | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-diccionarios-o-arrays-asociativos">JavaScript: diccionarios o arrays asociativos</h1>
+<p>Un diccionario o array asociativo es un objeto que asocia claves con valores. Es igual que un array, pero en un diccionario se puede usar cualquier valor como clave. En algunos lenguajes de programación existen estos objetos con el nombre de <em>hash</em> o <em>map</em>. En JavaScript, antes de EcmaScript 6, no había ningún objeto diseñado específicamente para actuar como un diccionario. Lo más parecido son los objetos, que asocian valores primitivos con un dato de cualquier tipo.</p>
+<h2 id="objetos-como-diccionarios">Objetos como diccionarios</h2>
+<p>Se puede usar la notación literal de los objetos para usarlos como diccionarios. Se pueden recorrer las propiedades y valores almacenados en un objeto usando un bucle <code>for in</code>. Los bucles <code>for in</code> recorren las propiedades de los objetos asignando el nombre de la propiedad a una variable.</p>
+<pre><code>var team = { pointGuard: &#39;Westbrook, shootingGuard: &#39;Waiters&#39;, smallForward: &#39;Durant&#39;, powerForward: &#39;Ibaka&#39;, center: &#39;Kanter&#39; };
+var result = [];
+
+for (var position in team) {
+  result.push(position + &#39;: &#39; + team[position]);
+}
+
+result; // [&#39;pointGuard: Westbrook&#39;, &#39;shootingGuard: Waiters&#39;, &#39;smallForward: Durant&#39;, &#39;powerForward: Ibaka&#39;, &#39;center: Kanter&#39;];
+</code></pre><p>Uno de los mayores problemas que tiene el uso de los objetos es que los objetos heredan propiedades de su prototipo. Las propiedades que hereda un objeto también se enumeran en el bucle <code>for in</code>.</p>
+<pre><code>function Dictionary() {}
+
+Dictionary.prototype.set = function(key, value) {
+  this[key] = value;
+}
+
+Dictionary.prototype.size = function() {
+  var count = 0;
+
+  for (var key in this) {
+    count++;
+  }
+
+  return count;
+}
+
+var team = new Dictionary();
+
+team.size(); // 2
+team.set(&#39;Small forward&#39;, &#39;Durant&#39;);
+team.size(); // 3
+</code></pre><p>Los objetos creados a partir de la clase <code>Dictionary</code> tienen el problema de que heredan los método <code>set</code> y <code>size</code>. Cuando queremos obtener el tamaño del diccionario, dentro del bucle <code>for in</code> también se enumeran los dos métodos heredados.</p>
+<p>También puede darse el caso de las propiedades heredadas cuando se usa la forma literal para crear objetos. Puede que alguna librería de terceros haya implementado un método nuevo en el prototipo del objeto <code>Object</code>. En estos casos se puede usar <code>Object.create</code> pasando el valor <code>null</code> como primer argumento del método para crear un objeto sin prototipo.</p>
+<pre><code>Object.prototype.myMethod = function() {
+  return &#39;hello&#39;;
+}
+
+function countObjectProperties(obj) {
+  var count = 0;
+  for (var key in obj) {
+    count++;
+  }
+  return count;
+}
+
+var team1 = {};
+var team2 = Object.create(null);
+
+countObjectProperties(team1); // 1
+countObjectProperties(team2); // 0
+</code></pre><p>Cuando se cuentan las propiedades del objeto <code>team1</code>, creado usando la notación literal de objetos, se obtiene 1 como resultado, porque se cuenta el método <code>myMethod</code> que hereda del protitopo de <code>Object</code>. Si se hace lo mismo con el objeto <code>team2</code>, se obtiene 0 como resultado porque no hereda de ningún prototipo.</p>
+<p>Si crea un objeto literal para usarlo como diccionario, se puede usar el método <code>hasOwnProperty</code>, para saber qué propiedades son del objeto y no heredadas.</p>
+<pre><code>var team = { pointGuard: &#39;Stephen Curry&#39; };
+team1.hasOwnProperty(&#39;toString&#39;); // false
+team1.hasOwnProperty(&#39;pointGuard&#39;); // true
+</code></pre><p>La parte mala de usar este método en los diccionarios, es que se puede asignar una propiedad que se llame <code>hasOwnProperty</code> y rompa la funcionalidad del método. Para evitarlo, es conveniente almacenar una copia del método en una variable. A la función almacenada en la variable se la puede llamar usando el método <code>call</code> para asignar su objeto <code>this</code> al objeto sobre el que se quiera hacer la comprobación.</p>
+<pre><code>var team1 = {};
+var team2 = {};
+var hasOwnPropertyCopy = Object.prototype.hasOwnProperty;
+
+team1.hasOwnProperty = &#39;Hello&#39;;
+team1.pointGuard = &#39;Stephen Curry&#39;;
+team1.hasOwnProperty(&#39;pointGuard&#39;); // error
+
+team2.hasOwnProperty = &#39;Hello&#39;;
+team2.pointGuard = &#39;Rusell Westbrook&#39;;
+hasOwnPropertyCopy.call(team2, &#39;pointGuard&#39;); // true
+</code></pre><p>Otro de los inconvenientes de usar un objeto como diccionario es la propiedad especial <code>__proto__</code>. Esta propiedad almacena el prototipo del objeto. En algunos intérpretes de JavaScript esta propiedad se asigna incluso cuando se crea el objeto usando <code>Object.create(null)</code>. También puede pasar que se asigne una valor con la clave <code>__proto__</code> y se rompa la cadena de prototipos del objeto. Para evitar las incompatibilidades entre distintos intérpretes de JavaScript, se puede usar un constructor para los diccionarios que tenga un comportamiento especial con la clave <code>__proto__</code>. Este ejemplo se puede encontrar en el libro <a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a>.</p>
+<pre><code>function Dictionary(elements) {
+  this.elements = elements || {}; // inicialización del diccionario
+  this.hasSpecialProto = false; // ¿se ha asignado una clave &#39;__proto__&#39;?
+  this.specialProto = undefined; // valor de la clave &#39;__proto__&#39;
+}
+
+Dictionary.prototype.has = function(key) {
+  if (key === &#39;__proto__&#39;) {
+    return this.hasSpecialProto;
+  }
+  return {}.hasOwnProperty.call(this.elements, key);
+}
+
+Dictionary.prototype.get = function(key) {
+  if (key === &#39;__proto__&#39;) {
+    return this.specialProto;
+  }
+  return this.has(key) ? this.elements[key] : undefined;
+}
+
+Dictionary.prototype.set = function(key, value) {
+  if (key === &#39;__proto__&#39;) {
+    this.hasSpecialProto = true;
+    this.specialProto = value;
+  }
+  else {
+    this.elements[key] = value;
+  }
+}
+
+Dictionary.prototype.remove = function(key) {
+  if (key === &#39;__proto__&#39;) {
+    this.hasSpecialProto = false;
+    this.specialProto = undefined;
+  }
+  else {
+    delete this.elements[key];
+  }
+}
+
+var team = new Dictionary({ pointGuard: &#39;Westbrook&#39; });
+
+team.has(&#39;pointGuard&#39;); // true
+team.get(&#39;pointGuard&#39;); // &#39;Westbrook&#39;
+team.remove(&#39;pointGuard&#39;);
+team.has(&#39;pointGuard&#39;); // false
+
+team.has(&#39;__proto__&#39;); // false
+team.set(&#39;__proto__&#39;, &#39;my proto&#39;);
+team.get(&#39;__proto__&#39;); // &#39;my proto&#39;
+</code></pre><h2 id="objeto-map-">Objeto <code>Map</code></h2>
+<p>Aunque se puede usar el constructor anterior para crear objetos diccionarios, en EcmaScript 6 existe el objeto <code>Map</code> para crearlos. El objeto <code>Map</code> es un objeto iterable, lo que quiere decir que se puede recorrer usando un bucle <code>for of</code>.</p>
+<pre><code>var team = new Map();
+</code></pre><p>Para insertar un nuevo valor con su clave se usa el método <code>set</code>. Se puede usar cualquier tipo de dato como clave, incluidos los objetos y funciones.</p>
+<pre><code>var objectKey = {};
+var functionKey = function() {};
+
+team.set(&#39;Small forward&#39;, &#39;Kevin Durant&#39;);
+team.set(objectKey, &#39;object key value&#39;);
+team.set(functionKey, &#39;function key value&#39;);
+</code></pre><p>Para obtener el valor asociado con una clave existe el método <code>get</code>. Si en una clave se ha usado un objeto o una función, en realidad lo que se almacena como clave es su referencia.</p>
+<pre><code>team.get(&#39;Small forward&#39;) // &#39;Kevin Durant&#39;
+
+team.get(objectKey); // &#39;object key value&#39;
+team.get({}); // undefined; {} !== objectKey
+
+team.get(functionKey); // &#39;function key value&#39;
+team.get(function() {}); // undefined; function() {} !== functionKey
+</code></pre><p>También se pueden eliminar el valor de una clave con el método <code>delete</code>. Otro método para eliminar valores es <code>clear</code> que eliminar todas las claves y valores almacenados en el objeto. Se puede comprobar si se ha asociado algún valor con una clave usando el método <code>has</code>.</p>
+<pre><code>team.has(objectKey); // true
+team.delete(objectKey); // true
+team.has(objectKey); // false
+
+team.has(&#39;Small forward&#39;); // true
+team.clear();
+team.has(&#39;Small forward&#39;); // false
+</code></pre><p>La forma más sencilla de recorrer un objeto <code>Map</code> es usando el método <code>forEach</code> del objeto o un bucle <code>for of</code>. Usando el método <code>forEach</code> se recorren los valores del objeto en orden de inserción.</p>
+<pre><code>var team = new Map();
+var forEachResult = [];
+var forOfResult = [];
+team.set(&#39;Point guard&#39;, &#39;Russell Westbrook&#39;);
+team.set(&#39;Small forward&#39;, &#39;Kevin Durant&#39;);
+team.set(&#39;Power forward&#39;, &#39;Serge Ibaka&#39;);
+
+team.forEach(function(value, key) {
+  forEachResult.push(key + &#39;: &#39; + value);
+});
+
+for (var [key, value] of team) {
+  forOfResult.push(key + &#39;: &#39; + value);
+}
+
+forEachResult; // [&#39;Point guard: Russell Westbrook&#39;, &#39;Small forward: Kevin Durant&#39;, &#39;Power forward: Serge Ibaka&#39;]
+forOfResult; // [&#39;Point guard: Russell Westbrook&#39;, &#39;Small forward: Kevin Durant&#39;, &#39;Power forward: Serge Ibaka&#39;]
+</code></pre><p>Otras formas de recorrer un objeto <code>Map</code> es usando sus métodos que devuelven un objeto iterable. Uno de estos métodos es <code>entries</code>, que devuelve un objeto iterable en el que cada elemento es un array en el que el primer elemento es la clave y el segundo el valor.</p>
+<pre><code>var teamEntries = team.entries();
+var result = [];
+
+for (var [key, value] of teamEntries) {
+  result.push(key + &#39;: &#39; + value);
+}
+
+result; // [&#39;Point guard: Russell Westbrook&#39;, &#39;Small forward: Kevin Durant&#39;, &#39;Power forward: Serge Ibaka&#39;]
+</code></pre><p>Las claves del objeto <code>Map</code> también se pueden obtener en forma de objeto iterable usando el método <code>keys</code>.</p>
+<pre><code>var teamKeys = team.keys();
+var result = [];
+
+for (var key of teamKeys) {
+  result.push(key);
+}
+
+result; // [&#39;Point guard&#39;, &#39;Small forward&#39;, &#39;Power forward&#39;]
+</code></pre><p>También se puede obtener un iterable de los valores usando el método <code>values</code>.</p>
+<pre><code>var teamValues = team.values();
+var result = [];
+
+for (var value of teamValues) {
+  result.push(value);
+}
+
+result; // [&#39;Russell Westbrook&#39;, &#39;Kevin Durant&#39;, &#39;Serge Ibaka&#39;]
+</code></pre><p>A parte de todos estos métodos, los objetos <code>Map</code> también tienen la propiedad <code>size</code> que devuelve el número de elementos que contiene el objeto.</p>
+<pre><code>team.size; // 3
+</code></pre><p>Usar el objeto <code>Map</code> es la mejor forma de crear un diccionario en JavaScript. El mayor inconveniente es que hay navegadores que todavía no han inplementado el objeto <code>Map</code> ni el bucle <code>for of</code>. Para saber la compatibilidad de estas características con cada uno de los motores de JavaScript se puede consultar <a href="https://kangax.github.io/compat-table/es6/">esta tabla</a>.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="http://wiki.ecmascript.org/doku.php?id=harmony:simple_maps_and_sets">http://wiki.ecmascript.org/doku.php?id=harmony:simple_maps_and_sets</a></li>
+<li><a href="http://www.ecma-international.org/ecma-262/6.0/#sec-for-in-and-for-of-statements">http://www.ecma-international.org/ecma-262/6.0/#sec-for-in-and-for-of-statements</a></li>
+<li><a href="http://www.ecma-international.org/ecma-262/6.0/#sec-map-objects">http://www.ecma-international.org/ecma-262/6.0/#sec-map-objects</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map</a></li>
+<li><a href="http://blog.xkoder.com/2008/07/10/javascript-associative-arrays-demystified/">http://blog.xkoder.com/2008/07/10/javascript-associative-arrays-demystified/</a></li>
+<li><a href="http://www.less-broken.com/blog/2010/12/lightweight-javascript-dictionaries.html">http://www.less-broken.com/blog/2010/12/lightweight-javascript-dictionaries.html</a></li>
+<li><a href="http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182">Effective JavaScript</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
