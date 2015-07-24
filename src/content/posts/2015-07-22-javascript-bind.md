@@ -133,7 +133,7 @@ También se puede hacer *currying* de una función que no usa el objeto `this`. 
 
 Como la función `sum` no usa el objeto `this`, se puede asignar el valor `null` a este objeto. La variable `sum3` contiene la función resultante de hacer *currying* de `sum` con el valor 3 asignado a su parámetro `x`. La función que se obtiene como resultado acepta un parámetro y devuelve el resultado de sumarle 3.
 
-## Fuentes:
+## Fuentes
 
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
 * [https://docs.webplatform.org/wiki/javascript/Function/bind](https://docs.webplatform.org/wiki/javascript/Function/bind)

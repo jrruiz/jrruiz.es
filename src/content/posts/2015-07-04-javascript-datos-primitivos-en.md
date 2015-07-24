@@ -53,7 +53,8 @@ Si se usa el modo estricto la asignación de propiedades a datos primitivos lanz
     var x = 1;
     x.newProperty = 2; // error
 
-## Fuentes:
+## Fuentes
+
 * [https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/](https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/)
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

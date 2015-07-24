@@ -72,6 +72,7 @@ Las closures almacenan la referencia de las variables de la función en la que s
 
 La función `counter` devuelve un objeto con tres closures: `add`, `subtract` y `getValue`. Las tres closures comparten el acceso a la variable `x`. Los cambios que hace la closure `add` a `x`, se pueden ver reflejados en las funciones `subtract` y `getValue`.
 
-## Fuentes:
+## Fuentes
+
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

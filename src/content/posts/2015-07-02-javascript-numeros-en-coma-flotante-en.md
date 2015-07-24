@@ -17,6 +17,7 @@ Para hacer cálculos precisos, es mejor usar números enteros. Por ejemplo si se
 
     (10 + 20) + 30 // 60 (céntimos)
 
-## Fuentes:
+## Fuentes
+
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

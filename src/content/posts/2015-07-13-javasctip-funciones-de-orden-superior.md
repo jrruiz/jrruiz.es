@@ -63,7 +63,8 @@ Estas funciones también se pueden usar para crear otras funciones. Cuando una f
 
 Este paradigma de programación es beneficioso para reducir el código duplicado y su complejidad. También facilita el mantenimiento porque se basa en funciones pequeñas que sólo hacen una cosa. Si se encuentra algún error en código que sigue este paradigma, sólo habrá que corregirlo en una función que normalmente será muy simple.
 
-## Fuentes:
+## Fuentes
+
 * [http://eloquentjavascript.net/05_higher_order.html](http://eloquentjavascript.net/05_higher_order.html)
 * [http://javascriptissexy.com/understand-javascript-callback-functions-and-use-them/#more-1037](http://javascriptissexy.com/understand-javascript-callback-functions-and-use-them)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

@@ -27,5 +27,6 @@ La creación de variables globales de forma intencioanada se considera una mala 
 
 Para evitar estos problemas se usan herramientas de análisis de código que se llaman *linters*. Los *linters* permiten definir qué variables globales usa nuestro código y otros parámetros avanzados. Los *linters* para JavaScript más conocidos son [eslint](http://eslint.org/), [jshint](http://jshint.com/) y [jslint](http://www.jslint.com/). Es recomendable el uso de alguna de estas herramientas para evitar los errores más comunes y malas prácticas cuando se escribe código.
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

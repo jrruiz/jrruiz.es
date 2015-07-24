@@ -67,5 +67,6 @@ Las conversiones que se hacen al comparar dos datos con `==` son las siguientes:
   </tbody>
 </table>
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

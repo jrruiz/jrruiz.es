@@ -55,7 +55,8 @@ También se puede usar `apply` para llamar a funciones que operan con un número
 
 La función `average` puede recibir cualquier número de parámetros y devuelve su media. Llamando a la función con `apply`, se puede pasar un array, en el que cada uno de sus elementos se convertirá en un argumento para la función `average`.
 
-## Fuentes:
+## Fuentes
+
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

@@ -90,7 +90,8 @@ Para evitar estos problemas, la mejor forma de usarlo es dentro de una IIFE.
 
 De esta forma al estar todo el código de cada archivo dentro de una IIFE, el modo estricto se puede usar de forma independiente para cada uno de ellos. Lo único que hay que tener en cuenta cuando se usa este método, es que el código de cada archivo no se va a ejecutar en el ámbito global, si no en el ámbito local de la IIFE.
 
-## Fuentes:
+## Fuentes
+
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode)
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
 * [https://docs.webplatform.org/wiki/javascript/directives/use_strict](https://docs.webplatform.org/wiki/javascript/directives/use_strict)

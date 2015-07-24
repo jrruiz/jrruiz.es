@@ -73,5 +73,6 @@ Como todas las variables y funciones globales son propiedades y métodos del obj
       // el navegador no soporta el objeto Promise
     }
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

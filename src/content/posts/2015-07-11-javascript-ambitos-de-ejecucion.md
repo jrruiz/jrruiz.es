@@ -74,6 +74,7 @@ Otra característica muy potente de las IIFE es la posibilidad de pasarles argum
 
 El valor que recuerdan las closures de `f1` es el de `i`, que es para todas la misma variable y al salir del bucle vale 11. El valor que recuerdan las closures de `f2` es el del parámetro que recibe la IIFE, que es distinto para cada closure.
 
-## Fuentes:
+## Fuentes
+
 * [http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html](http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

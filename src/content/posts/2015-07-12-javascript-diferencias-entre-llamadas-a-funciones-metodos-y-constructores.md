@@ -93,5 +93,6 @@ La última forma de llamar a una función es como un constructor usando el opera
 
 Si se llama como una función normal a una función que está pensada para ser usada como constructor, el valor de `this` estará enlazado al objeto global. Por lo al asignar propiedades a `this`, en realidad se estarán asignando al objeto global. Esto puede hacer que se sobrescriban variables globales o se creen algunas nuevas que no queremos.
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

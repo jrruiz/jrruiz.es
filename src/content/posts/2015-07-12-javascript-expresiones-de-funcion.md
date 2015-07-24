@@ -33,5 +33,6 @@ A las expresiones de función no les afecta el hoisting. Si se está asignando l
     var f1 = function() { return 'Hello'; };
     function f2() { return 'Hello'; }
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

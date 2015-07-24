@@ -118,5 +118,6 @@ Otra forma de saber si un dato es `undefined`, es comparando directamente con el
 
     if (x === undefined) { /* ... */ }
 
-## Fuentes:
+## Fuentes
+
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

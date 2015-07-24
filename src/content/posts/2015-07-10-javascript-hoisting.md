@@ -58,7 +58,8 @@ Al contrario que en las variables, en las funciones se mueve también su cuerpo.
     function f1() { return 1; } // se mueve toda la función al inicio
     var f2 = function() { return 2; }; // sólo se mueve la declaración de f2
 
-## Fuentes:
+## Fuentes
+
 * [http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html](http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html)
 * [https://developer.mozilla.org/en-US/docs/Glossary/Hoisting](https://developer.mozilla.org/en-US/docs/Glossary/Hoisting)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)

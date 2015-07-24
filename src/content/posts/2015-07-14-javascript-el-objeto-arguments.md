@@ -105,7 +105,8 @@ Esto pasa porque `arguments` no es una copia de los parámetros de la función. 
 
 Para evitar estos problemas cuando se vaya a modificar el objeto `arguments`, es mejor convetirlo antes en un array.
 
-## Fuentes:
+## Fuentes
+
 * [https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments)
 * [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments)
 * [Effective JavaScript](http://www.amazon.es/Effective-JavaScript-Specific-Software-Development/dp/0321812182)
