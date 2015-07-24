@@ -94,7 +94,7 @@ function getTotalPoints() {
 getTotalPoints(&#39;Kevin Durant&#39;, 31, 23, 15, 44, 22); // &#39;0: 135 points&#39;
 </code></pre><p>Esto pasa porque <code>arguments</code> no es una copia de los parámetros de la función. En realidad, los parámetros comparten la referencia de los elementos de <code>arguments</code>. Se puede evitar esto si se usa el modo estricto dentro de la función. En este caso los parámetros no compartirán la referencia con los elementos de <code>arguments</code>.</p>
 <p>Para evitar estos problemas cuando se vaya a modificar el objeto <code>arguments</code>, es mejor convetirlo antes en un array.</p>
-<h2 id="fuentes-">Fuentes:</h2>
+<h2 id="fuentes">Fuentes</h2>
 <ul>
 <li><a href="https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments">https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments</a></li>
