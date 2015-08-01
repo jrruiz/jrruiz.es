@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: operadores a nivel de bits | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-operadores-a-nivel-de-bits">JavaScript: operadores a nivel de bits</h1>
+<p>Los operadores a nivel de bits son operadores matemáticos que trabajan con la repesentación binaria de número enteros. JavaScript representa todos los números como conjuntos de 64 bits. Para hacer las operaciones, los operadores a nivel de bits, convierten los números en enteros de 32 bits. El resultado de las operaciones lo devuelven como números de 64 bits.</p>
+<p>Aunque en algunos lenguajes estos operadores son más rápidos que los operadores matemáticos normales, en JavaScript no es así. Incluso algunas operaciones son más rápidas usando los operadores matemáticos normales.</p>
+<p>Para representar números negativos y positivos en 32 bits, se usa el primer bit de la izquierda como signo. Si el primer bit es 1, el número es negativo, si es 0 el número es positivo. El número entero más grande que se puede conseguir usando 32 bits es 2<sup>31</sup>-1 = 2147483647. El número entero más pequeño en 32 bits es -(2<sup>31</sup>) = -2147483648.</p>
+<p>Los números negativos se convierten en enteros de 32 bits usando el complemento a 2 de su valor positivo. El complemento a 2 en binario de un número se calcula en tres pasos. En este ejemplo se quiere obtener la representación binaria de 32 bits del número -13:</p>
+<ol>
+<li><p>Se obtiene el valor absoluto del número que se quiere convertir a binario.</p>
+<p> |-13| = 13 -&gt; 0000 0000 0000 0000 0000 0000 0000 1101</p>
+</li>
+<li><p>Se invierte el valor de todos los bits del número en binario.</p>
+<p> 0000 0000 0000 0000 0000 0000 0000 1101 -&gt; 1111 1111 1111 1111 1111 1111 1111 0010</p>
+</li>
+<li><p>Se suma 1 al resultado binario de invertir todos los bits.</p>
+<p> 1111 1111 1111 1111 1111 1111 1111 0010 + 1 = 1111 1111 1111 1111 1111 1111 1111 0011    </p>
+</li>
+</ol>
+<p>El equivalente a -13 en binario de 32 bits es 11111111111111111111111111110011.</p>
+<p>Hay siete operadores a nivel de bits en JavaScript.</p>
+<ol>
+<li>AND (x &amp; y)</li>
+<li>OR (x | y)</li>
+<li>XOR (x ^ y)</li>
+<li>NOT (~ x)</li>
+<li>Desplazamiento a la izquierda (x &lt;&lt; y)</li>
+<li>Desplazamiento a la derecha (x &gt;&gt; y)</li>
+<li>Desplazamiento a la derecha con cambio de signo (x &gt;&gt;&gt; y)</li>
+</ol>
+<p>Estos operadores también se pueden combinar con el operador de asignación. Es lo mismo <code>x = x &amp; 5</code> que <code>x &amp;= 5</code>.</p>
+<h2 id="and-x-y-">AND (x &amp; y)</h2>
+<p>El operador <code>AND</code> compara los bits de dos números y devuelve otro número con un <strong>1 en las posiciones donde los otros dos números tienen un 1</strong>. Este operador se representa con el un ampersand <code>&amp;</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">y</th>
+<th style="text-align:center">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>Siguiendo la tabla de verdad del operador <code>AND</code>, si se hace la operación <code>13 &amp; 7</code> se obtiene 5.</p>
+<pre><code>13 &amp; 7; // 5
+
+    0000 0000 0000 0000 0000 0000 0000 1101 (13 decimal)
+AND 0000 0000 0000 0000 0000 0000 0000 0111 (7 decimal)
+    ---------------------------------------
+    0000 0000 0000 0000 0000 0000 0000 0101 (5 decimal)
+</code></pre><h2 id="or-x-y-">OR (x | y)</h2>
+<p>El operador <code>OR</code> compara los bits de dos números y devuelve otro número con un <strong>1 en las posiciones donde alguno de los otros dos números tienen un 1</strong>. Este operador se representa con una barra vertical <code>|</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">y</th>
+<th style="text-align:center">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>Siguiendo la tabla de verdad del operador <code>OR</code>, si se hace la operación <code>13 | 7</code> se obtiene 15.</p>
+<pre><code>13 | 7; // 15
+
+   0000 0000 0000 0000 0000 0000 0000 1101 (13 decimal)
+OR 0000 0000 0000 0000 0000 0000 0000 0111 (7 decimal)
+   ---------------------------------------
+   0000 0000 0000 0000 0000 0000 0000 1111 (15 decimal)
+</code></pre><h2 id="xor-x-y-">XOR (x ^ y)</h2>
+<p>El operador <code>XOR</code> compara los bits de dos números y devuelve otro número con un <strong>1 en las posiciones donde sólo uno de los operandos tienen un 1</strong>. Este operador se representa con un símbolo de acento circunflejo <code>^</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">y</th>
+<th style="text-align:center">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Siguiendo la tabla de verdad del operador <code>XOR</code>, si se hace la operación <code>13 ^ 7</code> se obtiene 10.</p>
+<pre><code>13 ^ 7; // 15
+
+    0000 0000 0000 0000 0000 0000 0000 1101 (13 decimal)
+XOR 0000 0000 0000 0000 0000 0000 0000 0111 (7 decimal)
+    ---------------------------------------
+    0000 0000 0000 0000 0000 0000 0000 1010 (10 decimal)
+</code></pre><h2 id="not-x-">NOT (~ x)</h2>
+<p>El operador <code>NOT</code> invierte los valores de todos los bits del número en el que opera. Una operación <code>NOT</code> sobre un número <code>x</code> da como resultado el <strong>mismo número más 1 en negativo <code>(x + 1) * -1</code></strong>. Este operador se representa con un símbolo de tilde <code>~</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>Siguiendo la tabla de verdad del operador <code>NOT</code>, si se hace la operación <code>~ 13</code> se obtiene -14.</p>
+<pre><code>~ 13; // 2
+
+NOT 0000 0000 0000 0000 0000 0000 0000 1101 (13 decimal)
+  = 1111 1111 1111 1111 1111 1111 1111 0010 (-14 decimal)
+</code></pre><h2 id="desplazamiento-a-la-izquierda-x-y-">Desplazamiento a la izquierda (x &lt;&lt; y)</h2>
+<p>Cuando se hace una operación de desplazamiento a la izquierda, se mueven todos los bits del número hacia la izquierda las posiciones que se indiquen. Para mover los bits hacia la izquierda, <strong>se añaden tantos ceros a la derecha como posiciones haya que moverlos</strong>. Al desplazar los bits hacia la izquierda el resultado puede tener un signo distinto que el número original. Esta operación se representa con dos símbolos de menor que <code>&lt;&lt;</code>.</p>
+<p>Si se deplaza 3 posiciones a la izquierda los bits del número 45, se obtiene el número 360.</p>
+<pre><code>45 &lt;&lt; 3; // 360
+
+  0000 0000 0000 0000 0000 0000 0010 1101 &lt;&lt; 3 (45 &lt;&lt; 3)
+= 0000 0000 0000 0000 0000 0001 0110 1000 (360 decimal)
+</code></pre><p>Cuando se desplazan a la izquierda los bits de un número negativo, se consigue el mismo resultado, pero con distinto signo, que si se desplazan a la izquierda las mismas posiciones del número en positivo. La formula que define esta igualdad es <code>-x &lt;&lt; y === -(x &lt;&lt; y)</code>.</p>
+<pre><code>-45 &lt;&lt; 3; // -360
+
+  1111 1111 1111 1111 1111 1111 1101 0011 &lt;&lt; 3 (-45 &lt;&lt; 3)
+= 1111 1111 1111 1111 1111 1110 1001 1000 (-360 decimal)
+
+45 &lt;&lt; 3; // 360
+
+  0000 0000 0000 0000 0000 0000 0010 1101 &lt;&lt; 3 (45 &lt;&lt; 3)
+= 0000 0000 0000 0000 0000 0001 0110 1000 (360 decimal)
+</code></pre><h2 id="desplazamiento-a-la-derecha-x-y-">Desplazamiento a la derecha (x &gt;&gt; y)</h2>
+<p>Cuando se hace una operación de desplazamiento a la derecha, se mueven todos los bits del número hacia la derecha las posiciones que se indiquen. Para mover los bits hacia la derecha, <strong>se eliminan tantos bits de la derecha como posiciones haya que moverlos</strong>. Esta operación se representa con dos símbolos de mayor que <code>&gt;&gt;</code>.</p>
+<p>Usando este operador siempre se mantiene el signo del número desplazado. Si es negativo, el resultado será negativo, si es positivo, el resultado será positivo. Se añaden ceros a la izquierda si el número es positivo. Si el número es negativo se añaden unos a la izquierda.</p>
+<p>Si se deplaza 3 posiciones a la derecha los bits del número 45, se obtiene el número 5.</p>
+<pre><code>45 &gt;&gt; 3; // 5
+
+  0000 0000 0000 0000 0000 0000 0010 1101 &gt;&gt; 3 (45 &gt;&gt; 3)
+= 0000 0000 0000 0000 0000 0000 0000 0101 (5 decimal)
+</code></pre><p>Al desplazar a la derecha los bits de un número negativo, se consigue el mismo resultado que si se hace una operación <code>NOT</code> sobre el resultado de desplazar a la derecha las mismas posiciones del mismo número en positivo. Esto se puede resumir con la fórmula <code>-x &gt;&gt; y === ~ (x &gt;&gt; y)</code>.</p>
+<pre><code>-45 &gt;&gt; 3; // -6
+
+  1111 1111 1111 1111 1111 1111 1101 0011 &gt;&gt; 3 (-45 &gt;&gt; 3)
+= 1111 1111 1111 1111 1111 1111 1111 1010 (-6 decimal)
+
+~(45 &gt;&gt; 3); // -6
+
+  0000 0000 0000 0000 0000 0000 0010 1101 &gt;&gt; 3 (45 &gt;&gt; 3)
+= 0000 0000 0000 0000 0000 0000 0000 0101 (5 decimal)
+NOT 0000 0000 0000 0000 0000 0000 0000 0101
+  = 1111 1111 1111 1111 1111 1111 1111 1010 (-6 decimal)
+</code></pre><h2 id="desplazamiento-a-la-derecha-con-cambio-de-signo-x-y-">Desplazamiento a la derecha con cambio de signo (x &gt;&gt;&gt; y)</h2>
+<p>Esta operación es igual que un desplazamiento a la derecha normal, pero el resultado puede tener un signo distinto que el del número original. Esto pasa porque este desplazamiento siempre añade ceros a la izquierda. Cualquier número negativo que use esta operación dará como resultado un número positivo. Esta operación se representa con tres símbolos de mayor que <code>&gt;&gt;&gt;</code>.</p>
+<p>Si se desplazan una posición los bits del número más pequeño en 32 bits, se obtiene un número positivo. El número más pequeño en 32 bits es el <code>-2147483648</code> que en binario se representa <code>1000 0000 0000 0000 0000 0000 0000 0000</code>.</p>
+<pre><code>-2147483648 &gt;&gt;&gt; 1; // 1073741824
+
+  1000 0000 0000 0000 0000 0000 0000 0000 &gt;&gt;&gt; 1 (-2147483648 &gt;&gt;&gt; 1)
+= 0100 0000 0000 0000 0000 0000 0000 0000 (1073741824 decimal)
+</code></pre><h2 id="ejemplo">Ejemplo</h2>
+<p>Uno de los casos de uso más comunes es el de convertir un color rgb en hexadecimal. Los colores rgb están compuestos de tres número. Cada uno de estos números va desde el 0 hasta el 255. Cada número indica la cantidad de rojo, verde o azul que tiene.</p>
+<pre><code>var rgb = {
+  r: 92,
+  g: 131,
+  b: 175
+};
+</code></pre><p>Un color en hexadecimal es igual que uno rgb, pero usa sólo un número hexadecimal, en vez de tres como el rgb. En los colores hexadecimales, cada uno de los componentes de un color rgb se representan con dos cifras. Por ejemplo el color <code>rgb(255, 0, 0)</code> es el <code>FF0000</code> en hexadecimal. Si se representa este número en hexadecimal, se obtiene lo siguiente.</p>
+<pre><code>FF0000 -&gt; 0000 0000 1111 1111 0000 0000 0000 0000
+</code></pre><p>Aquí se ve que cada color usa dos grupos 8 bits para su representación, lo que da el total de 256 ó 2<sup>8</sup> valores posibles.</p>
+<p>Sabiendo esto se pueden usar los operadores a nivel de bits para convertir un color rgb a decimal.</p>
+<pre><code>var rgb = {
+  r: 92, // 0101 1100
+  g: 131, // 1000 0011
+  b: 175 // 1010 1111
+};
+
+var r = rgb.r &lt;&lt; 16; // 0000 0000 0101 1100 0000 0000 0000 0000
+
+var g = rgb.g &lt;&lt; 8; // 0000 0000 0000 0000 1000 0011 0000 0000
+
+var b = rgb.b; // 0000 0000 0101 1100 0000 0000 1010 1111
+
+var decimal = r | g | b; // 0000 0000 0101 1100 1000 0011 1010 1111 (6063023 decimal)
+</code></pre><p>Como el color rojo ocupa los bits desde el 23 hasta el 16, hay que desplazat¡r</p>
+<p>Teniendo el color en decimal, se puede convertir en hexadecimal usando el método <code>toString</code> del objeto number, pasándole como argumento la base del número que queremos obtener.</p>
+<pre><code>decimal.toString(16); // &#39;5c83af&#39;
+</code></pre><p>A partir del color decimal también se puede conseguir la cantidad de uno de los tres colores que componen este color. Para hacer esto se usa el desplazamiento a la derecha, una máscara de 8 bits y el operador <code>AND</code>.</p>
+<pre><code>var decimal = 6063023 -&gt; 0000 0000 0101 1100 1000 0011 1010 1111
+var mask = 255; // 0000 0000 0000 0000 0000 0000 1111 1111
+
+// 0000 0000 0000 0000 0000 0000 0101 1100 &amp; 1111 1111
+var r = (decimal &gt;&gt;&gt; 16) &amp; mask; // 0101 1100 (92 decimal)
+
+// 0000 0000 0000 0000 0101 1100 1000 0011 &amp; 1111 1111
+var g = (decimal &gt;&gt;&gt; 8) &amp; mask; // 1000 0011 (131 decimal)
+
+// 0000 0000 0101 1100 1000 0011 1010 1111 &amp; 1111 1111
+var b = decimal &amp; mask; // 1010 1111 (175 decimal)
+</code></pre><p>En el ejemplo se ve que para conseguir la cantidad de un color, se hace la operación inversa que para convertir un color rgb en decimal. Primero se hace un desplazamiento a la derecha del número de bits que ocupe el color y después se usa la máscara de bits para obtener el valor.</p>
+<p>Este uso de los operadores a nivel de bits es muy útil para componer número a partir de otros más pequeños y después obtener el valor de cada componente.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="http://code.tutsplus.com/articles/understanding-bitwise-operators--active-11301">http://code.tutsplus.com/articles/understanding-bitwise-operators--active-11301</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators</a></li>
+<li><a href="http://michalbe.blogspot.com.es/2013/03/javascript-less-known-parts-bitwise.html">http://michalbe.blogspot.com.es/2013/03/javascript-less-known-parts-bitwise.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Bitwise_operation">https://en.wikipedia.org/wiki/Bitwise_operation</a></li>
+<li><a href="http://danthedev.com/2015/07/25/binary-in-javascript/">http://danthedev.com/2015/07/25/binary-in-javascript/</a></li>
+<li><a href="http://graphics.stanford.edu/~seander/bithacks.html">http://graphics.stanford.edu/~seander/bithacks.html</a></li>
+<li><a href="http://www.amazon.es/Professional-JavaScript-Developers-Nicholas-Zakas/dp/1118026691">Professional JavaScript for web developers</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
