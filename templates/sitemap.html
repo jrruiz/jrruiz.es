@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ulrset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://jrruiz/</loc>
+    <lastmod>{{#sitemapDate}}{{currentDate}}{{/sitemapDate}}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  {{#posts}}
+    <url>
+      <loc>http://jrruiz/{{{path}}}</loc>
+      <lastmod>{{#sitemapDate}}{{date}}{{/sitemapDate}}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+  {{/posts}}
+  {{#pages}}
+    <url>
+      <loc>http://jrruiz/{{{path}}}</loc>
+      <lastmod>{{#sitemapDate}}{{date}}{{/sitemapDate}}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+  {{/pages}}
+</urlset>

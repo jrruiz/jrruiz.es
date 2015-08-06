@@ -29,6 +29,10 @@ Metalsmith(__dirname)
   .use(markdown())
   .use(permalinks({ pattern: ':collection/:title' })) // this plugin must be executed after the files are converted to html
   .use(function(files, metalsmith, done) {
+    metalsmith.metadata().currentDate = new Date();
+    done();
+  })
+  .use(function(files, metalsmith, done) {
     var metadata = metalsmith.metadata();
 
     metadata.formatDate = function() {
@@ -40,6 +44,22 @@ Metalsmith(__dirname)
         result = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
 
         return result;
+      };
+    };
+
+    metadata.sitemapDate = function() {
+      return function(text, render) {
+        var date = render(text);
+        var day;
+        var month;
+        var year;
+        
+        date = new Date(date);
+        day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+        month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+        year = date.getFullYear();
+
+        return [year, month, day].join('-');
       };
     };
 
