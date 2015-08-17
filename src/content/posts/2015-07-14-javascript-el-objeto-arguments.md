@@ -26,7 +26,7 @@ El objeto `arguments` se puede usar para crear funciones con un número indeterm
 
 La función `getTotalPoints` no tiene ningún parámetro definido. Usa el objeto `arguments` para recoger cualquier número de argumentos que se le pasen y operar con ellos.
 
-Se puede método `apply` que tienen todas las funciones, para usar un array como argumento de la función. El ejemplo anterior usando `apply` quedaría así.
+Se puede usar el método `apply`, para pasar un array como argumentos de la función. El ejemplo anterior usando `apply` quedaría así.
 
     var player1Points = [31, 23, 15, 44, 22];
     var player2Points = [25, 17, 31];

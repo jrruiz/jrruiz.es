@@ -1,7 +1,7 @@
 ---
 title: "JavaScript: entendiendo las closures"
 date: 2015-07-09
-tags: javascript, scopes
+tags: javascript, functions, scopes
 template: post.html
 ---
 
