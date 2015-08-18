@@ -1,7 +1,6 @@
 ---
 title: "JavaScript: memoización"
 date: 2015-08-18
-draft: true
 tags: javascript, functions
 template: post.html
 ---
@@ -57,7 +56,7 @@ Si la función espera más de un argumento, se puede memoizar usando el método 
 
 En este ejemplo, la función `myFunction` recibe dos parámetros y ejecuta un código muy pesado para obtener el resultado. Para usar la memoización, se convierte el objeto arguments en un string JSON. Este estring JSON es el que se usa como índice de la caché para almacenar el resultado de la función.
 
-Se pueden aprovechar las closures y las funciones de orden superior de JavaScript para hacer una función que reciba otra función como parámetro y la devuelva memoizada. Un ejemplo de como se puede implementar esta función puede ser el siguiente.
+Se pueden aprovechar las closures y las funciones de orden superior de JavaScript para hacer una función que reciba otra función como parámetro y la devuelva memoizada.
 
     function memoize(fn) {
       var cache = {};
@@ -68,7 +67,7 @@ Se pueden aprovechar las closures y las funciones de orden superior de JavaScrip
         var args;
 
         if (!(cacheIndex in cache)) {
-          args = arraySlice(arguments);
+          args = arraySlice.call(arguments);
           cache[cacheIndex] = fn.apply(null, args);
         }
 
@@ -76,7 +75,23 @@ Se pueden aprovechar las closures y las funciones de orden superior de JavaScrip
       };
     }
 
-<!-- Explicar lo que hace la función `memoize` -->
+La función que devuelve `memoize`, es una closure que recuerda el valor de la variable local `cache` y `arraySlice`. cuando se llama a la función memoizada, lo primero que se hace es convertir el objeto `arguments` en string para usarlo como índice de la caché. Si el índice no existe en la caché de la función, el objeto `arguments` se convierte en array. Después se llama a la función original usando `apply`. El resultado de la función se guarda en el objeto caché bajo el índice que se creó al principio. Si el índice de la caché ya tiene un valor, no se ejecuta la función original y se devuelve directamente este valor.
+
+    function factorial(x) {
+      var total = 1;
+
+      if (x > 1) {
+        total = x * factorial(x - 1);
+      }
+
+      return total;
+    }
+
+    var memoizedFactorial = memoize(factorial);
+
+    memoizedFactorial(5); // 120
+
+En este ejemplo se ha memoizado la función `factorial` que se creó en el primer ejemplo. La función memoizada se llama igual que a la función original. Usando la función `memoize` se puede memoizar cualquier función sin tener que escribirlas memoizadas.
 
 ## Fuentes:
 * [http://www.sitepoint.com/implementing-memoization-in-javascript/](http://www.sitepoint.com/implementing-memoization-in-javascript/)
