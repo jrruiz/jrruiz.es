@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: memoización | jrruiz</title>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-66022697-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-memoizaci-n">JavaScript: memoización</h1>
+<p>La memoización es una técnica para mejorar el rendimiento de una función. Consiste en cachear los resultados que devuelve la función. Así cuando la función se llama por segunda vez usando los mismos argumentos, el resultado estará cacheado y la ejecución será mucho más rápida.</p>
+<p>Se puede usar un objeto de JavaScript como caché. El objeto caché usa como índice el valor que ha recibido la función como parámetro. El valor de cada índice es el resultado que va a devolver la función.</p>
+<pre><code>function factorial(x) {
+  var total = 1;
+
+  if (x &gt; 1) {
+    total = x * factorial(x - 1);
+  }
+
+  return total;
+}
+</code></pre><p>La función <code>factorial</code> es una función recursiva que calcula el factorial de un número positivo. El factorial de <code>x</code> se calcula multiplicando todos los números desde el 1 hasta <code>x</code>. Por ejemplo, el factorial de 4 es <code>1 * 2 * 3 * 4</code>. La función anterior memoizada sería así.</p>
+<pre><code>function factorial(x) {
+  if (!(x in factorial.cache)) {
+    factorial.cache[x] = 1;
+
+    if (x &gt; 1) {
+      factorial.cache[x] = x * factorial(x - 1);
+    }
+  }
+
+  return factorial.cache[x];
+}
+
+factorial.cache = {};
+</code></pre><p>En esta versión, la función <code>factorial</code> usa la propiedad <code>cache</code> para almacenar el resultado que va a devolver. Ahora cuando se llame a esta función con un argumento que ya se ha usado antes, el resultado estará cacheado y la ejecución será más rápida porque no hay que calcular de nuevo el resultado.</p>
+<p>Si la función espera más de un argumento, se puede memoizar usando el método <code>JSON.stringify</code> sobre el objeto <code>arguments</code> para obtener el índice de la caché.</p>
+<pre><code>function myFunction(x, y) {
+  var cacheIndex = JSON.stringify(arguments);
+
+  if (!(cacheIndex in myFunction.cache)) {
+    // ... heavy processing code
+    myFunction.cache[cacheIndex] = result;
+  }
+
+  return myFunction.cache[cacheIndex];
+}
+
+myFunction.cache = {};
+</code></pre><p>En este ejemplo, la función <code>myFunction</code> recibe dos parámetros y ejecuta un código muy pesado para obtener el resultado. Para usar la memoización, se convierte el objeto arguments en un string JSON. Este estring JSON es el que se usa como índice de la caché para almacenar el resultado de la función.</p>
+<p>Se pueden aprovechar las closures y las funciones de orden superior de JavaScript para hacer una función que reciba otra función como parámetro y la devuelva memoizada.</p>
+<pre><code>function memoize(fn) {
+  var cache = {};
+  var arraySlice = Array.prototype.slice;
+
+  return function() {
+    var cacheIndex = JSON.stringify(arguments);
+    var args;
+
+    if (!(cacheIndex in cache)) {
+      args = arraySlice.call(arguments);
+      cache[cacheIndex] = fn.apply(null, args);
+    }
+
+    return cache[cacheIndex];
+  };
+}
+</code></pre><p>La función que devuelve <code>memoize</code>, es una closure que recuerda el valor de la variable local <code>cache</code> y <code>arraySlice</code>. cuando se llama a la función memoizada, lo primero que se hace es convertir el objeto <code>arguments</code> en string para usarlo como índice de la caché. Si el índice no existe en la caché de la función, el objeto <code>arguments</code> se convierte en array. Después se llama a la función original usando <code>apply</code>. El resultado de la función se guarda en el objeto caché bajo el índice que se creó al principio. Si el índice de la caché ya tiene un valor, no se ejecuta la función original y se devuelve directamente este valor.</p>
+<pre><code>function factorial(x) {
+  var total = 1;
+
+  if (x &gt; 1) {
+    total = x * factorial(x - 1);
+  }
+
+  return total;
+}
+
+var memoizedFactorial = memoize(factorial);
+
+memoizedFactorial(5); // 120
+</code></pre><p>En este ejemplo se ha memoizado la función <code>factorial</code> que se creó en el primer ejemplo. La función memoizada se llama igual que a la función original. Usando la función <code>memoize</code> se puede memoizar cualquier función sin tener que escribirlas memoizadas.</p>
+<h2 id="fuentes-">Fuentes:</h2>
+<ul>
+<li><a href="http://www.sitepoint.com/implementing-memoization-in-javascript/">http://www.sitepoint.com/implementing-memoization-in-javascript/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Memoization">https://en.wikipedia.org/wiki/Memoization</a></li>
+<li><a href="http://addyosmani.com/blog/faster-javascript-memoization/">http://addyosmani.com/blog/faster-javascript-memoization/</a></li>
+<li><a href="https://github.com/shichuan/javascript-patterns/blob/master/function-patterns/memoization.html">https://github.com/shichuan/javascript-patterns/blob/master/function-patterns/memoization.html</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596517748.do">JavaScript: The Good Parts</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
