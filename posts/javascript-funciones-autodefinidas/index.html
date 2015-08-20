@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: funciones autodefinidas | jrruiz</title>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-66022697-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-funciones-autodefinidas">JavaScript: funciones autodefinidas</h1>
+<p>Las funciones autodefinidas, son funciones que cambian su propia definición cuando se ejecutan por primera vez. Estas funciones también se llaman funciones de definición perezosa. Este patrón de programación es útil cuando se necesita iniciar algunos parámetros de la función con valores que no van a cambiar en el resto del programa.</p>
+<p>Hay tres usos principales para las funciones autodefinidas: para evitar cálculos repetitivos</p>
+<h2 id="funciones-autodefinidas-para-evitar-c-lculos-repetitivos">Funciones autodefinidas para evitar cálculos repetitivos</h2>
+<p>Tenemos un objeto <code>person</code> y queremos implementar un método <code>getDniLetter</code> para calcular su letra del DNI. Para evitar repetir el cálculo en cada llamada al método, se pueden usar variables globales. Cuando se ejecute por primera vez el método, se guardará su resultado en una variable global. En las llamas siguientes, se comprueba si ya tiene un valor esa variable global para no repetir el cálculo.</p>
+<pre><code>var dniLetters = [&#39;T&#39;, &#39;R&#39;, &#39;W&#39;, &#39;A&#39;, ...]; // letras del dni
+var remainder;
+var letter;
+var person = {
+  dni: &#39;123456789&#39;,
+  getDniLetter: function() {
+    if (!letter) {
+      remainder = parseInt(this.dni) % 23;
+      letter = dniLetters[remainder];
+    }
+
+    return letter;
+  }
+};
+
+person.getDniLetter(); // &#39;B&#39;
+</code></pre><p>En este ejemplo, el método <code>getDniLetter</code> del objeto <code>person</code> tiene varios problemas. El primero es que las variables globales que usa para calcular el resultado se pueden cambiar desde otra parte del programa. Por otro lado siempre que se llame al método, se tiene que ejecutar un bloque <code>if</code> para saber si hay que calcular la letra o no. El útimo problema es que la variable <code>dniLetters</code> se inicializa aunque después no se use ninguna vez en el código.</p>
+<p>Se puede conseguir el mismo funcionamiento si se implementan las variables como propiedades del objeto <code>person</code>.</p>
+<pre><code>var person = {
+  dni: &#39;123456789&#39;,
+  dniLetters. [&#39;T&#39;, &#39;R&#39;, &#39;W&#39;, &#39;A&#39;, ...], // letras del dni
+  remainder: 0,
+  letter: &#39;&#39;,
+  getDniLetter: function() {
+      if (!this.letter) {
+        this.remainder = parseInt(this.dni) % 23;
+        this.letter = this.dniLetters[remainder];
+      }
+
+      return this.letter;
+  }
+};
+
+person.getDniLetter(); // &#39;B&#39;
+</code></pre><p>Esta implementación mejora a la anterior en que no usa variables globales. Pero sigue teniendo el problema de que se pueden cambiar los valores de las propiedades que se usan para calcular la letra y se ejecuta un <code>if</code> en cada llamada. Además del problema de que se inicializan las variables aunque después no se llame al método en ningún momento.</p>
+<p>Se puede mejorar un poco usando una IIFE en la que se declaren las variables como locales y devuelva una función closure.</p>
+<pre><code>var person = {
+  dni: &#39;123456789&#39;,
+  getDniLetter: (function() {
+    var dniLetters = [&#39;T&#39;, &#39;R&#39;, &#39;W&#39;, &#39;A&#39;, ...]; // letras del dni
+    var remainder;
+    var letter;
+
+    return function() {
+      if (!letter) {
+        remainder = parseInt(this.dni) % 23;
+        letter = dniLetters[remainder];
+      }
+
+      return letter;
+    };
+  })()
+};
+
+person.getDniLetter(); // &#39;B&#39;
+</code></pre><p>Con esta implementación del método <code>getDniLetter</code>, se evita que se cambien las variables que se usan para calcular la letra del DNI. Pero sigue ejecutando el <code>if</code> en cada llamada y se sigue inicializando la variable <code>dniLetters</code> aunque no se use depués.</p>
+<p>Si este método se crea como una función autodefinida, se pueden evitar todos los problemas anteriores.</p>
+<pre><code>var person = {
+  dni: &#39;123456789&#39;,
+  getDniLetter: function() {
+    var dniLetters = [&#39;T&#39;, &#39;R&#39;, &#39;W&#39;, &#39;A&#39;, ...]; // letras del dni
+    var remainder = parseInt(this.dni) % 23;
+    var letter = dniLetters[remainder];
+
+    this.getDniLetter = function() {
+      return letter;
+    };
+
+    return this.getDniLetter();
+  }
+};
+
+person.getDniLetter(); // &#39;B&#39;
+</code></pre><p>En este ejemplo, la primera vez que se llama al método <code>getDniLetter</code>, se crean las variables necesarias, locales al método y se calcula la letra. Antes de devolver el resultado, se cambia el propio método para que la siguiente vez que se llame, simplemente devuelva el valor que se calculó antes.</p>
+<p>Con la última implementación se consigue evitar los tres problemas que teníamos antes:</p>
+<ol>
+<li>No se puede cambiar el valor de las variables que se usan para calcular la letra del DNI.</li>
+<li>No se ejecuta el bloque <code>if</code> en cada llamada al método.</li>
+<li>Las variables que se usan para hacer el cálculo, no se inicializan hasta que se necesitan, que sería la primera vez que se llama al método.</li>
+</ol>
+<h2 id="funciones-autodefinidas-de-un-s-lo">Funciones autodefinidas de un sólo</h2>
+<p>Las funciones de un sólo uso son muy fáciles de implementar con funciones autodefinidas.</p>
+<pre><code>var one = function() {
+  one = function() {
+    throw new Error(&#39;You can call this function only once&#39;);
+  };
+  return 1;
+};
+
+one(); // 1
+one(); // Error: You can call this function only once
+</code></pre><p>La primera vez que se llama a la función <code>one</code>, devuelve el valor <code>1</code>. Cuando se llama a la función a partir de la segunda vez, siempre lanza una una excepción. Esto pasa porque la función se redefine a sí misma la primera vez se ejecuta.</p>
+<h2 id="funciones-autodefinidas-condicionales">Funciones autodefinidas condicionales</h2>
+<p>Otro patrón en el que se pueden usar las funciones autodefinidas es para que se reescriban de forma condicional. Programando en el navegador, se puede dar el caso de que una función necesite saber si soporta alguna funcionalidad. Usando una función autodefinida, la primera vez que se llame ala función, se ejecuta un condicional. Dependiendo del resultado del condicional, la función se reescribirá de una forma u otra.</p>
+<pre><code>var addEventHandler = function(firstEvent, firstElement, firstHandler) {
+  if (element.addEventListener) {
+    addEventHandler = function(event, element, handler) {
+      element.addEventListener(event, handler, false);
+    };
+  }
+  else if (element.attachEvent) {
+    addEventHandler = function(event, element, handler) {
+      element.attachEvent(&#39;on&#39; + event, handler);
+    };
+  }
+  else {
+    addEventHandler = function(event, element, handler) {
+      element[&#39;on&#39; + event] = handler;
+    };
+  }
+
+  return addEventHandler(firstEvent, firstElement, firstHandler);
+};
+</code></pre><p>La primera vez que se llame a la función <code>addEventHandler</code>, se determina cómo se añaden los eventos en el navegador actual. La demás llamadas a la función, se ejecutarán de forma más eficiente, porque no tiene que volver a evaluar las condiciones para saber que método soporta el navegador.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://github.com/shichuan/javascript-patterns/blob/master/function-patterns/self-defining-functions.html">https://github.com/shichuan/javascript-patterns/blob/master/function-patterns/self-defining-functions.html</a></li>
+<li><a href="http://scriptble.com/2011/05/12/lazy-loading-functions/">http://scriptble.com/2011/05/12/lazy-loading-functions/</a></li>
+<li><a href="http://peter.michaux.ca/articles/lazy-function-definition-pattern">http://peter.michaux.ca/articles/lazy-function-definition-pattern</a></li>
+<li><a href="https://imbuzu.wordpress.com/2012/11/03/the-lazy-function-declaration-pattern-javascript/">https://imbuzu.wordpress.com/2012/11/03/the-lazy-function-declaration-pattern-javascript/</a></li>
+<li><a href="https://yobriefca.se/blog/2009/10/18/lazy-function-definition-pattern/">https://yobriefca.se/blog/2009/10/18/lazy-function-definition-pattern/</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a></li>
+<li><a href="http://www.amazon.es/Professional-JavaScript-Developers-Nicholas-Zakas/dp/1118026691">Professional JavaScript for web developers</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
