@@ -93,7 +93,8 @@ La función que devuelve `memoize`, es una closure que recuerda el valor de la v
 
 En este ejemplo se ha memoizado la función `factorial` que se creó en el primer ejemplo. La función memoizada se llama igual que a la función original. Usando la función `memoize` se puede memoizar cualquier función sin tener que escribirlas memoizadas.
 
-## Fuentes:
+## Fuentes
+
 * [http://www.sitepoint.com/implementing-memoization-in-javascript/](http://www.sitepoint.com/implementing-memoization-in-javascript/)
 * [https://en.wikipedia.org/wiki/Memoization](https://en.wikipedia.org/wiki/Memoization)
 * [http://addyosmani.com/blog/faster-javascript-memoization/](http://addyosmani.com/blog/faster-javascript-memoization/)
