@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: espacios de nombres | jrruiz</title>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-66022697-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-espacios-de-nombres">JavaScript: espacios de nombres</h1>
+<p>Los espacios de nombres son una forma de agrupar variables, funciones y objetos. Usando espacios de nombres se reduce el número de globales que usa nuestra aplicación. También se reducen las sobrescrituras de variables y funciones por accidente.</p>
+<p>En JavaScript no hay una sintaxis específica para usar espacios de nombres. Se puede conseguir un funcionamiento similar usando un objeto global. En este objeto global se añaden todas las variables, funciones y objetos de la aplicación. Además de esto se pueden añadir otros objetos que funcionen como espacio de nombres anidado.</p>
+<pre><code>var app = {};
+
+app.teams = {};
+
+app.teams.okc = {
+  name: &#39;Oklahoma City Thunder&#39;,
+  players: []
+};
+app.teams[0].players.push({
+  name: &#39;Kevin Durant&#39;,
+  number: 35
+});
+
+app.getGamesWonByTeam = function(teamId) {
+  // ...
+};
+</code></pre><p>El objeto <code>app</code> es el espacio de nombres global que usa la aplicación. Dentro del espacio de nombres global, existe el objeto <code>teams</code> y la función <code>getGamesWonByTeam</code>. El objeto <code>teams</code> se está usando como un subespacio de nombres que contiene todos los equipos con sus jugadores.</p>
+<p>Un problema de los espacios de nombres en JavaScript es la anidación de muchos niveles. Si se quiere organizar un espacio de nombres que contenga <code>app.associations.nba.teams.okc</code> habría que hacerlo así:</p>
+<pre><code>var app = {
+  associations: {
+    nba: {
+      teams: {
+        okc: {
+          ...
+        }
+      }
+    }
+  }
+};
+</code></pre><p>Tener una estructura con tantos niveles puede ser muy costoso para añadir funcionalidades y para usarlas. En el libro <a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a> se implementa una función para crear nuevos espacios de nombres y recorrerlos.</p>
+<pre><code>var app = {
+  namespace: function(nsString) {
+    var parent = app;
+    var parts = nsString.split(&#39;.&#39;);
+
+    if (parts[0] === &#39;app&#39;) {
+      parts = parts.slice(1);
+    }
+
+    parts.forEach(function(part) {
+      if (typeof parent[part] === &#39;undefined&#39;) {
+        parent[part] = {};
+      }
+
+      parent = parent[part];
+    });
+
+    return parent;
+  }
+};
+
+app.namespace(&#39;associations.nba.teams.okc&#39;);
+</code></pre><p>El método <code>namespace</code> del espacio de nombres global crea otros espacios de nombres y devuelve el de nivel más bajo de los que ha creado. Para crear espacios de nombres recibe un string separado por puntos. Cada una de las partes separadas por un punto es un espacio de nombres dentro del espacio de nombres global. El método recorre cada una de las partes y si el espacio de nombres no existe, lo crea. Después cambia la variable local <code>parent</code> para que contenga el último espacio de nombres creado. Cuando termina el método, devuelve el último espacio de nombres que se ha creado.</p>
+<p>Si existen todos los espacios de nombres incluidos en el string que recibe el método <code>namespace</code>, el método sólo devuelve el espacio de nombres con un nivel más bajo de los que ha recibido.</p>
+<pre><code>// el espacio de nombres existe, lo devuelve sin crear nada
+var okc = app.namespace(&#39;associations.nba.teams.okc&#39;);
+// el espacio de nombres no existe, lo crea y lo devuelve
+var sas = app.namespace(&#39;associations.nba.teams.sas&#39;);
+</code></pre><h2 id="declaraci-n-de-dependencias">Declaración de dependencias</h2>
+<p>Cuando los espacios de nombres tienen muchos niveles, hay que escribir más código para llegar al objeto o función que queramos usar. Además de tener que escribir más, al intérprete de JavaScript también le costará más recorrer toda la esctructura del espacio de nombres para llegar al data que necesitemos.</p>
+<p>Para evitar estos problemas, es buena idea declarar variables al inicio de las funciones, a las que se le asigne los objetos, funciones y variables que se quieran usar del espacio de nombres. Así, el intérprete de JavaScript sólo tendrá que recorrer el espacio de nombres una vez y queda claro qué partes del espacio de nombres usa la función.</p>
+<pre><code>function foo() {
+  var nbaTeams = app.associations.nba.teams;
+  var manUPlayers = app.associations.fifa.teams.manU.players;
+  // ...
+}
+</code></pre><p>En la función <code>foo</code> se han declarado dos dependencias. La primera dependencia se ha asignado a la variable <code>nbaTeams</code>, la segunda a <code>manUPlayers</code>.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://javascriptweblog.wordpress.com/2010/12/07/namespacing-in-javascript/">https://javascriptweblog.wordpress.com/2010/12/07/namespacing-in-javascript/</a></li>
+<li><a href="http://addyosmani.com/blog/essential-js-namespacing/">http://addyosmani.com/blog/essential-js-namespacing/</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
