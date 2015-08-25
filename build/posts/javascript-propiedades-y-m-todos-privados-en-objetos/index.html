@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: propiedades y métodos privados en objetos | jrruiz</title>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-66022697-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-propiedades-y-m-todos-privados-en-objetos">JavaScript: propiedades y métodos privados en objetos</h1>
+<p>En JavaScript todos los métodos y propiedades de los objetos son públicos. Esto quiere decir que se puede acceder a ellos y modificarlos desde fuera del propio objeto.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+  getName: function() {
+    return this.name;
+  }
+};
+
+function Language() {
+  this.name = &#39;Spanish&#39;;
+  this.getName = function() {
+    return this.name;
+  };
+}
+var lang = new Language();
+
+player.name; // &#39;Kevin Durant&#39;
+player.getName(); // &#39;Kevin Durant&#39;
+
+lang.name; // &#39;Spanish&#39;
+lang.getName(); // &#39;Spanish&#39;
+</code></pre><p>En el ejemplo, se puede acceder al método y la propiedad de los objetos porque son públicos. A parte de acceder a estos miembros de los objetos, también se puede cambiar su valor.</p>
+<pre><code>var player = {
+  name: &#39;Kevin Durant&#39;,
+  getName: function() {
+    return this.name;
+  }
+};
+
+player.name = &#39;Stephen Curry&#39;;
+player.getName = &#39;getName redefined&#39;;
+player.name; // &#39;Stephen Curry&#39;
+player.getName(); // Error: player.getName is not a function
+</code></pre><p>Como el método <code>getName</code> del objeto <code>player</code> es público, se puede cambiar su valor por algo que no sea una función. Si se hace esto, al intentar usarlo como un método, dará un error. Esto puede romper funcionalidades que esperan que <code>getName</code> sea de tipo función.</p>
+<p>Aunque el lenguaje no tenga una sintaxis específica para declarar propiedades y métodos privados en los objetos, se pueden implementar usando closures. Para conseguir esta funcionalidad, se aprovecha que las closures recuerdan el ámbito en el que fueron creadas.</p>
+<h2 id="miembros-privados-en-constructores">Miembros privados en constructores</h2>
+<p>La forma más sencilla de implementar propiedades y métodos privados es usando constructores. Sólo hay que declarar la propiedad o el método como una variable o closure dentro de la función constructor.</p>
+<pre><code>function Player() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  // private
+  function getFirstName() {
+    return firstname;
+  }
+
+  // private
+  function getLastName() {
+    return lastname;
+  }
+
+  // public
+  this.getFullName = function() {
+    return getFirstName() + &#39; &#39; + getLastName();
+  };
+}
+var player1 = new Player();
+
+player1.getFullName(); // &#39;Kevin Durant&#39;
+player1.firstname; // undefined
+player1.lastname; // undefined
+player1.getFirstName; // Error: player1.getFirstName is not a function
+</code></pre><p>La función constructor <code>Player</code>, sólo tiene como miembro público el método <code>getFullName</code>. Cuando se intenta acceder a las variables <code>firstname</code> o <code>lastname</code>, se obtiene el valor <code>undefined</code> porque no pertenecen al objeto. A estas variables sólo tienen acceso las funciones closure <code>getFullName</code>, <code>getFirstName</code> y <code>getLastName</code>. Las funciones closure <code>getFirstName</code> y <code>getLastName</code> también se han definido como privadas. Sólo se puede acceder a ellas desde dentro del constructor.</p>
+<p>Si las variables <code>firstname</code> y <code>lastname</code> se definen como propiedades públicas del objeto, las funciones privadas no tendrán acceso a ellas. Las funciones privadas pueden acceder a las propiedades y métodos del objeto si se invocan con el método <code>apply</code> o <code>call</code>. También se pueden definir como una expresión de función y después usar el método <code>bind</code> para que su objeto <code>this</code> sea el objeto que se ha creado con el constructor.</p>
+<pre><code>function Player() {
+  // private
+  this.firstname = &#39;Kevin&#39;;
+  // private
+  this.lastname = &#39;Durant&#39;;
+
+  // private
+  var getFirstName = function() {
+    return this.firstname;
+  }.bind(this);
+
+  // private
+  function getLastName() {
+    return this.lastname;
+  }
+
+  // public
+  this.getFullName = function() {
+    return getFirstName() + &#39; &#39; + getLastName.call(this);
+  };
+}
+var player1 = new Player();
+
+player1.getFullName(); // &#39;Kevin Durant&#39;
+player1.firstname; // &#39;Kevin&#39;
+player1.lastname; // &#39;Durant&#39;
+player1.getFirstName; // Error: player1.getFirstName is not a function
+</code></pre><p>En este ejemplo, <code>firstname</code> y <code>lastname</code> son propiedades del objeto <code>player1</code>. Para que las funciones privadas puedan acceder a estas propiedades, hay que asignar a su objeto <code>this</code> el objeto creado con el constructor. La función <code>getFirstName</code> se ha creado como una expresión de función, para asignarle el valor de <code>this</code> se ha usado el método <code>bind</code>. La función <code>getLastName</code> se ha creado como una función closure normal. Para que funcione bien hay que invocarla con el método <code>call</code> o <code>apply</code> para asignarle el valor de <code>this</code>.</p>
+<h2 id="miembros-privados-en-objetos-literales">Miembros privados en objetos literales</h2>
+<p>Para implementar miembros privados en un objeto creado con notación literal, se puede usar una IIFE donde se declaren las variables y funciones privadas, además del propio objeto. De esta forma todos los métodos del objeto tienen acceso a los miembros privados.</p>
+<pre><code>var player;
+(function() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  // private
+  function getFirstName() {
+    return firstname;
+  }
+
+  // private
+  function getLastName() {
+    return lastname;
+  }
+
+  // using the global variable
+  player = {
+    // public
+    getFullName: function() {
+      return getFirstName() + &#39; &#39; + getLastName();
+    }
+  };
+})();
+
+player.getFullName(); // &#39;Kevin Durant&#39;
+</code></pre><p>Las variables <code>firstname</code> y <code>lastname</code> sólo son visibles dentro de la IIFE, igual que las funciones <code>getFirstName</code> y <code>getLastName</code>. La variable <code>player</code> que se usa dentro de la IIFE, es la variable global que se declaró antes de ejecutar la IIFE. Como el método <code>getFullName</code> se declaró dentro de la IIFE, tiene acceso a todas las variables y funciones creadas dentro de ella.</p>
+<p>Se puede conseguir el mismo efecto que en el ejemplo anterior si en vez de usar una variable global, se asigna el valor devuelto por la IIFE a la variable que contendrá el objeto. En este caso la IIFE tiene que devolver el objeto en vez de asignarlo a una variable.</p>
+<pre><code>var player = (function() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  // private
+  function getFirstName() {
+    return firstname;
+  }
+
+  // private
+  function getLastName() {
+    return lastname;
+  }
+
+  return {
+    // public
+    getFullName: function() {
+      return getFirstName() + &#39; &#39; + getLastName();
+    }
+  };
+})();
+
+player.getFullName(); // &#39;Kevin Durant&#39;
+</code></pre><p>Se pueden implementar miembros privados en prototipos usando las mismas técnicas que para los objetos literales.</p>
+<pre><code>function Player() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  // public
+  this.getFullName = function() {
+    return firstname + &#39; &#39; + lastname;
+  };
+}
+
+Player.prototype = (function() {
+  // private
+  var teamName = &#39;Oklahoma City Thunder&#39;;
+
+  return {
+    // public
+    getTeamName: function() {
+      return teamName;
+    }
+  };
+})();
+
+var player1 = new Player();
+
+player1.getFullName(); // &#39;Kevin Durant&#39;
+player1.getTeamName(); // &#39;Oklahoma City Thunder&#39;
+</code></pre><h2 id="objetos-privados">Objetos privados</h2>
+<p>Cuando se devuelve una de las variables privadas de un objeto, se devuelve su valor en caso de que sea un dato primitivo. Pero si lo que se devuelve es de tipo objeto o array, lo que se estará pasando es la referencia al objeto. De esta forma el objeto privado se podrá modificar desde fuera del objeto.</p>
+<pre><code>var player = (function() {
+  var team = {
+    name: &#39;Oklahoma City Thunder&#39;,
+    abbreviation: &#39;okc&#39;,
+    city: &#39;Oklahoma&#39;,
+    country: &#39;USA&#39;
+  };
+
+  return {
+    name: &#39;Kevin Durant&#39;,
+    getTeam: function() {
+      return team;
+    }
+  };
+})();
+
+var team = player.team;
+team.name = &#39;Golden State Warriors&#39;;
+player.team.name; // &#39;Golden State Warriors&#39;
+</code></pre><p>Para evitar que pase esto, se puede devolver un objeto que sea una copia del privado. En caso de que sea un array, se puede usar el método <code>slice</code> para crear una copia y devolverla. Si es un objeto, se puede devolver sólo las propiedades que se necesiten. También se puede devolver una copia completa del objeto, creada con <code>Object.assign</code> o una implementación propia de este método.</p>
+<pre><code>function extend(target, source) {
+  var value;
+
+  if (source) {
+    for (var key in source) {
+      value = source[key];
+      if (typeof source[key] !== &#39;undefined&#39;) {
+        target[key] = value;
+      }
+    }
+  }
+
+  return target;
+}
+
+var player = (function() {
+  var team = {
+    name: &#39;Oklahoma City Thunder&#39;,
+    abbreviation: &#39;okc&#39;,
+    city: &#39;Oklahoma&#39;,
+    country: &#39;USA&#39;
+  };
+
+  return {
+    name: &#39;Kevin Durant&#39;,
+    getTeam: function() {
+      return extend({}, team);
+    }
+  };
+})();
+
+var team = player.team;
+team.name = &#39;Golden State Warriors&#39;;
+player.team.name; // &#39;Oklahoma City Thunder&#39;
+</code></pre><p>En este ejemplo, el método <code>getTeam</code> devuelve una copia del objeto privado <code>team</code> usando la función <code>extend</code>. Como en este caso lo que se devuelve no es el objeto privado, aunque se hagan cambios sobre él, no se reflejan en el objeto privado <code>team</code>.</p>
+<h2 id="m-todos-privilegiados">Métodos privilegiados</h2>
+<p>Los métodos privilegiados son métodos públicos que tienen acceso a los miembros privados del objeto.</p>
+<pre><code>var player = (function() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  return {
+    // public privileged method
+    getFullName: function() {
+      return firstname + &#39; &#39; + lastname;
+    }
+  };
+})();
+
+player.getFullName(); // &#39;Kevin Durant&#39;
+</code></pre><p>El método <code>getFullName</code>, es un método privilegiado porque tiene acceso a las variables privadas <code>firstname</code> y <code>lastname</code>.</p>
+<h2 id="funciones-privadas-expuestas">Funciones privadas expuestas</h2>
+<p>Las funciones privadas expuestas, son funciones privadas normales, pero que se asignan a alguna propiedad pública del objeto. De esta forma pueden ser usadas fuera del objeto.</p>
+<pre><code>var player = (function() {
+  // private
+  var firstname = &#39;Kevin&#39;;
+  // private
+  var lastname = &#39;Durant&#39;;
+
+  // private
+  function getFirstName() {
+    return firstname;
+  }
+
+  // private
+  function getLastName() {
+    return lastname;
+  }
+
+  return {
+    // public privileged method
+    getFullName: function() {
+      return getFirstName() + &#39; &#39; + getLastName();
+    },
+    // revealed private functions
+    getFirstName: getFirstName,
+    getLastName: getLastName
+  };
+})();
+
+player.getFullName(); // &#39;Kevin Durant&#39;
+player.getFirstName(); // &#39;Kevin&#39;
+player.getFirstName = &#39;foo&#39;;
+player.getFullName(); // &#39;Kevin Durant&#39;
+player.getFirstName(); // Error: player.getFirstName is not a function
+</code></pre><p>Cuando se modifica el valor de la propiedad <code>getFirstName</code>,  que contiene a una de las funciones privadas expuestas, no afecta al método privilegiado <code>getFullName</code>, porque este sigue usando las funciones privadas.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Contributor_s_Guide/Private_Properties">https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Contributor_s_Guide/Private_Properties</a></li>
+<li><a href="http://robertnyman.com/2008/10/14/javascript-how-to-get-private-privileged-public-and-static-members-properties-and-methods/">http://robertnyman.com/2008/10/14/javascript-how-to-get-private-privileged-public-and-static-members-properties-and-methods/</a></li>
+<li><a href="http://javascript.crockford.com/private.html">http://javascript.crockford.com/private.html</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
