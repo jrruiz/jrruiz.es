@@ -11,7 +11,7 @@ Las funciones autodefinidas, son funciones que cambian su propia definición cua
 
 Hay tres usos principales para las funciones autodefinidas: para evitar cálculos repetitivos
 
-## Funciones autodefinidas para evitar cálculos repetitivos
+## Evitar cálculos repetitivos con funciones autodefinidas
 
 Tenemos un objeto `person` y queremos implementar un método `getDniLetter` para calcular su letra del DNI. Para evitar repetir el cálculo en cada llamada al método, se pueden usar variables globales. Cuando se ejecute por primera vez el método, se guardará su resultado en una variable global. En las llamas siguientes, se comprueba si ya tiene un valor esa variable global para no repetir el cálculo.
 
