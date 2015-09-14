@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: el patrón módulo | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-el-patr-n-m-dulo">JavaScript: el patrón módulo</h1>
+<p>El patrón módulo en JavaScript consiste en usar functiones autoejecutables, closures y miembros privados para crear funcionalidades aisladas del ámbito global del programa.</p>
+<p>Con este patrón se puede conseguir código reusable, organizado y más fácil de mantener. El código es reusable porque no ensucia el ámbito global, evitando que se sobrescriban funciones y variables globales creadas por alguna librería externa. Y es más organizado y fácil de mantener porque hace que el programa no sea una serie de funciones y variables repartidas por todo el código. Si no que cada funcionalidad pertenece a un módulo que contiene todas las funciones y variables que necesita.</p>
+<pre><code>var module = (function() {
+  // private variables
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  // private function
+  function getModuleVersion() {
+    return moduleVersion;
+  }
+
+  // public API
+  return {
+    getVersion: function() {
+      return getModuleVersion();
+    },
+
+    getName: function() {
+      return moduleName;
+    }
+  };
+})();
+
+module.getVersion(); // &#39;1.0.0&#39;
+module.getName(); // &#39;My module&#39;
+module.moduleVersion; // undefined
+module.name; // undefined
+module.getModuleVersion(); // error: module.getModuleVersion is not a function
+</code></pre><p>En el ejemplo, la función autoejecutable declara la función privada <code>getModuleVersion</code> y las variables privadas <code>moduleName</code> y <code>moduleVersion</code>. Como resultado devuelve un objeto con dos métodos. Este objeto es la API pública del módulo. Los métodos públicos del módulo son <code>getVersion</code> y <code>getName</code>. El método <code>getVersion</code> usa la función privada <code>getModuleVersion</code> del módulo para devolver su valor. El método <code>getName</code> devuelve el valor de la variable privada <code>moduleName</code>. Estas variables y funciones privadas no son accesibles desde el exterior del módulo. Si se intenta acceder directamente a ellos, se obtiene un error o el valor <code>undefined</code>.</p>
+<h2 id="api-p-blica-del-m-dulo">API pública del módulo</h2>
+<p>Lo más importante del módulo es lo que devuelve usando <code>return</code>. Como cualquier otra función, un módulo puede devolver un valor primitivo, un objeto o una función. Lo que devuelva la función que crea el módulo, será la API pública de este y contiene las propiedades, métodos y valores que se podrán usar desde fuera del módulo.</p>
+<p>Como los módulos son funciones autoejecutables o functiones autoejecutables, se puede aprovechar esto para ejecutar algunas operaciones que sirvan para iniciar el módulo.</p>
+<h2 id="dependencias-del-m-dulo">Dependencias del módulo</h2>
+<p>Un módulo puede tener dependencias externas. Gracias a las functiones autoejecutables, se pueden pasar variables, funciones y objetos globales al módulo para su uso interno.</p>
+<pre><code>var module = (function(document) {
+  // private variables
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  // private function
+  function getModuleVersion() {
+    return moduleVersion;
+  }
+
+  // public API
+  return {
+    getVersion: function() {
+      return getModuleVersion();
+    },
+
+    getName: function() {
+      return moduleName;
+    },
+
+    getDomNodes: function(selector) {
+      if (document.querySelectorAll) {
+        this.getDomNodes = function(selector) {
+          return document.querySelectorAll(selector);
+        };
+      }
+      else if (document.getElementsByTagName) {
+        this.getDomNodes = function(tagName) {
+          return document.getElementsByTagName(tagName);
+        };
+      }
+      else {
+        this.getDomNodes = function(selector) {
+          console.log(&#39;getDomNodes warning: This browser does not support any type of query for an element&#39;);
+          return { selector: selector };
+        };
+      }
+
+      return this.getDomNodes(selector);
+    }
+  };
+})(document);
+
+module.getDomNodes(&#39;#element-id&#39;);
+</code></pre><p>En este ejemplo, el módulo tiene como dependencia al objeto global <code>document</code>. Para declarar esta dependencia, se pasa el objeto <code>document</code> como argumento de la función autoejecutable del módulo. Este objeto, se usa en el método público <code>getDomNodes</code> del módulo, que además es una función autodefinida. Al recibir el objeto <code>document</code> como parámetro, el módulo lo contiene como uno de sus miembros privados. De esta forma el intérprete de JavaScript puede acceder al objeto más rápido que si tiene que inspeccionar todos los ámbitos de ejecución hasta llegar al global para encontrarlo.</p>
+<h2 id="revelando-el-m-dulo">Revelando el módulo</h2>
+<p>Un módulo revelado es un módulo normal, pero el objeto que devuelve revela funciones privadas del módulo. Este comportamiento es exactamente igual que cuando se expone de forma pública un método privado de un objeto.</p>
+<pre><code>var module = (function() {
+  // private variables
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  // private function
+  function getModuleVersion() {
+    return moduleVersion;
+  }
+
+  // private function
+  function getModuleName() {
+    return moduleName;
+  }
+
+  // public API
+  return {
+    // reveals private functions of the module
+    getModuleVersion: getModuleVersion,
+    getModuleName: getModuleName
+  };
+})();
+</code></pre><p>Aquí las funciones privadas <code>getModuleVersion</code> y <code>getModuleName</code> se revelan al exterior del módulo a través de los métodos públicos con el mismo nombre.</p>
+<p>Usar este patrón tiene como ventaja declarar todas las funciones como privadas y exponer al exterior sólo las necesarias como métodos públicos del módulo. Si en algún momento del desarrollo del módulo alguna de estas funciones se quiere dejar como privada, sólo habrá que eleminiarla del objeto que devuelve el módulo.</p>
+<p>Si en el ejemplo anterior se quiere hacer que la función <code>getModuleName</code> sea privada, sólo habrá que eliminar la línea que la revela.</p>
+<pre><code>var module = (function() {
+  // private variables
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  // private function
+  function getModuleVersion() {
+    return moduleVersion;
+  }
+
+  // private function
+  function getModuleName() {
+    return moduleName;
+  }
+
+  // public API
+  return {
+    getModuleVersion: getModuleVersion
+  };
+})();
+</code></pre><p>Hay que tener cuidado con la referencia al objeto <code>this</code> dentro de las funciones privadas que se revelen. Si más adelante alguna de estas funciones se quiere hacer privada, el objeto <code>this</code> se referirá al objeto global del programa. Esto puede hacer que se devuelvan valores erróneos o se sobrescriban variables globales.</p>
+<pre><code>// globals
+var moduleName = &#39;My module&#39;;
+
+var module = (function() {
+  // private function
+  function getModuleVersion() {
+    return this.moduleVersion;
+  }
+
+  // private function
+  function getModuleName() {
+    return this.moduleName;
+  }
+
+  // public API
+  return {
+    moduleVersion: &#39;1.2.3&#39;,
+    moduleName: &#39;The best module ever created&#39;,
+    getModuleVersion: getModuleVersion,
+    getModuleInfo: function() {
+      return getModuleName() + &#39; &#39; + this.getMogetModuleVersion();
+    }
+  };
+})();
+
+module.getModuleInfo(); // My module 1.2.3
+</code></pre><p>En el ejemplo se ve que al hacer que privada a la función <code>getModuleName</code>, si se usa dentro del objeto que devuelve el módulo, se obtiene el valor de la variable global <code>moduleName</code>.</p>
+<h2 id="ampliar-m-dulos">Ampliar módulos</h2>
+<p>Un módulo se escribe dentro de una función autoejecutable, lo que hace que sea difícil dividirlo en varios archivos. Una solución para poder dividir un módulo en varios archivos es importando el módulo como dependencia de otro módulo. Dentro de ese otro módulo se harán las modificaciones necesarias y se devolverá el módulo original modificado.</p>
+<pre><code>var module = (function() {
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  return {
+    getVersion: function() {
+      return moduleVersion;
+    },
+
+    getName: function() {
+      return moduleName;
+    }
+  };
+})();
+
+module = (function(originalModule) {
+  var player = {
+    name: &#39;Kevin Durant&#39;,
+    number: 35
+  };
+
+  originalModule.getPlayerName = function() {
+    return player.name;
+  };
+
+  originalModule.getPlayerNumber = function() {
+    return player.number;
+  };
+
+  return originalModule;
+})(module);
+
+module.getPlayerName; // &#39;Kevin Durant&#39;
+module.getPlayerNumber; // 35
+</code></pre><p>Aquí, se declara un módulo que se asigna a la variable <code>module</code>. Esta variable que contiene al primer módulo, se pasa a otro módulo que amplía las funcionalidades del primero. Si estos dos módulos se separan en distintos archivos, es necesario que el módulo original se cargue antes que el módulo que amplía al original. Esto es así, porque el segundo módulo tiene como dependencia al primero.</p>
+<h3 id="ampliar-m-dulos-desacoplados">Ampliar módulos desacoplados</h3>
+<p>Se puede escribir módulos independientes del orden de carga de cada archivo. El código de estos módulo sería así:</p>
+<pre><code>// file1.js
+var module = (function(myModule) {
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  myModule.getVersion = function() {
+    return moduleVersion;
+  };
+
+  myModule.getName = function() {
+    return moduleName;
+  };
+
+  return myModule;
+})(module || {});
+
+// file2.js
+var module = (function(myModule) {
+  var player = {
+    name: &#39;Kevin Durant&#39;,
+    number: 35
+  };
+
+  myModule.getPlayerName = function() {
+    return player.name;
+  };
+
+  myModule.getPlayerNumber = function() {
+    return player.number;
+  };
+
+  return myModule;
+})(module || {});
+</code></pre><p>En el ejemplo, cada uno de los módulos está escrito en un archivo distinto. En los dos módulos se declara como dependencia al módulo <code>module</code>. Si cuando uno de los archivos ha terminado de cargar y todavía no existe el módulo, este se crea como un objeto vacío.</p>
+<h3 id="sobrescribir-m-todos-de-un-m-dulo">Sobrescribir métodos de un módulo</h3>
+<p>Una de las desventajas del patrón anterior, es que no se pueden sobrescribir los métodos del módulo. Para poder sobrescribir un módulo es importante el orden de carga de los archivos. Lo que se hace es cargar primero el módulo que declara el método que se quiere sobrescribir, y después el módulo que va a sobrescribir el método.</p>
+<pre><code>// file1.js
+var module = (function(myModule) {
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  myModule.getVersion = function() {
+    return moduleVersion;
+  };
+
+  myModule.getName = function() {
+    return moduleName;
+  };
+
+  return myModule;
+})(module || {});
+
+// file2.js
+var module = (function(myModule) {
+  myModule.getVersion = function() {
+    return &#39;2.0.0&#39;;
+  };
+
+  return myModule;
+})(module || {});
+</code></pre><p>Es necesario que se cargue el archivo <code>file1.js&#39; antes que</code>file2.js<code>para que se pueda sobrescribir el método</code>getVersion<code>. Si los archivos se cargasen al revés, el método</code>getVersion` no se sobrescribiría.</p>
+<p>Usando este patrón se pierde la posibilidad de cargar los módulos en paralelo, pero a cambio se pueden sobrescribir métodos y se pueden usar los métodos que ya han declarado otros módulos.</p>
+<h3 id="ampliar-un-m-dulo-con-subm-dulos">Ampliar un módulo con submódulos</h3>
+<p>Se puede ampliar un módulo usando submódulos. Un submódulo es sólo un objeto que se encuentra dentro de un módulo y contiene otro módulo. Una forma sencilla de ver esto es pensar en ellos como en plugins o como si el módulo padre fuese un <a href="/posts/javascript-espacios-de-nombres">espacio de nombres</a>. Una forma de hacer un submódulo es la siguiente.</p>
+<pre><code>// file1.js
+var module = (function(myModule) {
+  var moduleName = &#39;My module&#39;;
+  var moduleVersion = &#39;1.0.0&#39;;
+
+  myModule.getVersion = function() {
+    return moduleVersion;
+  };
+
+  myModule.getName = function() {
+    return moduleName;
+  };
+
+  return myModule;
+})(module || {});
+
+// file2.js
+module.submodule = (function() {
+  var player = {
+    name: &#39;Kevin Durant&#39;,
+    number: 35
+  };
+
+  return {
+    getPlayerName: function() {
+      return player.name;
+    },
+
+    getPlayerNumber: function() {
+      return player.number;
+    }
+  };
+})();
+
+module.submodule.getPlayerName(); // &#39;Kevin Durant&#39;
+module.submodule.getPlayerNumber(); // 35
+</code></pre><p>En este caso el módulo <code>module</code> se amplia con el submódulo <code>submodule</code>. La nueva funcionalidad se añade al submódulo en vez de al módulo original. En esta implementación del submódulo es necesario que el módulo padre ya esté creado.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="http://www.etnassoft.com/2011/04/11/el-patron-de-modulo-en-javascript-en-profundidad/">http://www.etnassoft.com/2011/04/11/el-patron-de-modulo-en-javascript-en-profundidad/</a></li>
+<li><a href="http://www.etnassoft.com/2011/04/12/revealing-module-javascript/">http://www.etnassoft.com/2011/04/12/revealing-module-javascript/</a></li>
+<li><a href="http://www.etnassoft.com/2011/04/18/ampliando-patron-modulo-javascript-submodulos/">http://www.etnassoft.com/2011/04/18/ampliando-patron-modulo-javascript-submodulos/</a></li>
+<li><a href="http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html">http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html</a></li>
+<li><a href="http://toddmotto.com/mastering-the-module-pattern/">http://toddmotto.com/mastering-the-module-pattern/</a></li>
+<li><a href="http://yuiblog.com/blog/2007/06/12/module-pattern/">http://yuiblog.com/blog/2007/06/12/module-pattern/</a></li>
+<li><a href="http://shop.oreilly.com/product/9780596806767.do">JavaScript Patterns</a></li>
+</ul>
+
+  </article>
+    </main>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-66022697-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
