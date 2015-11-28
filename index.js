@@ -4,7 +4,8 @@ var Metalsmith = require('metalsmith'),
   collections = require('metalsmith-collections'),
   permalinks = require('metalsmith-permalinks'),
   tags = require('metalsmith-tags'),
-  drafts = require('metalsmith-drafts');
+  drafts = require('metalsmith-drafts'),
+  pagination = require('metalsmith-pagination');
 
 Metalsmith(__dirname)
   .use(drafts())
