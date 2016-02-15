@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: solucionando el reto de Wes Bos | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-solucionando-el-reto-de-wes-bos">JavaScript: solucionando el reto de Wes Bos</h1>
+<p>El día 2 de Febrero de 2016 Wes Bos <a href="https://twitter.com/wesbos/status/694530601286676480">lanzó un reto por Twitter</a>. Este reto consistía en que cuando se haga clic en un checkbox, se pulsa la tecla shift y se hace clic en otro checkbox, se tienen que marcar todos los checkbox entre estos dos. La descripción del reto y el código con la solución de Wes Bos se puede encontrar <a href="http://codepen.io/wesbos/pen/zrLjYq">aquí</a>.</p>
+<p>Para conseguir superar el reto, lo primero que hice fue crear una función autoejecutable o IIFE para aislar el código del resto de la página.</p>
+<pre><code>(function init(window, document) {})(window, document);
+</code></pre><p>A la función autoejecutable le paso el objeto window y document que el intérprete no tenga que buscar estas variables en todos los ámbito de ejecución superiores.</p>
+<p>El siguiente paso fue crear unas variables locales a la función autoejecutable. Estas variables se usarán dentro de otras funciones closure que se declararán después.</p>
+<pre><code>var shiftKey = false;
+var checkboxes;
+var lastCheckedIndex;
+</code></pre><p>La variable <code>shiftKey</code> contiene un valor booleano que indica si la tecla shift está pulsada. La variable <code>checkboxes</code> será un array con todos los checkbox. La última variable, <code>lastCheckedIndex</code>, va a contener el índice, dentro del array <code>checkboxes</code>, del último checkbox que se ha marcado.</p>
+<p>Lo primero que se necesita es rellenar la variable <code>checkboxes</code> con todos los checkbox de la página. Esto lo hice usando el evento <code>load</code> del objeto <code>window</code>.</p>
+<pre><code>window.addEventListener(&#39;load&#39;, function onLoadHandler() {
+  var checkboxNodeList = document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;);
+  checkboxes = Array.prototype.slice.call(checkboxNodeList);
+});
+</code></pre><p>Usando el método <code>addEventListener</code>, se enlaza una función al evento <code>load</code> del objeto <code>window</code>. Este evento ocurre cuando la página termine de cargar, así nos aseguramos de que cuando se ejecute el navegador ya habrá cargado todos los checkbox. Dentro de la función que se ejecuta cuando ocurre el evento, se obtienen todos los checkbox usando <code>querySelectorAll</code>. Este método devuelve un objeto <code>NodeList</code> que contiene todos los checkbox. Los objetos de tipo <code>NodeList</code> se pueden usar de forma parecida a un array, pero no son arrays, pasa lo mismo que con el objeto <code>arguments</code> de las funciones. Para convertirlo en un array, con el que va a ser más fácil operar, se usa el método <code>call</code> para llamar al método <code>slice</code> del prototipo del objeto <code>Array</code>.</p>
+<p>Para detectar si la tecla shift está pulsada, se usan los eventos <code>keydown</code> y <code>keyup</code>. El evento <code>keydown</code> se ejecuta cuando se pulsa una tecla y el evento <code>keyup</code> cuando se suelta una tecla.</p>
+<pre><code>document.addEventListener(&#39;keydown&#39;, function keydownHandler(event) {
+  if (event.keyCode == 16) {
+    shiftKey = true;
+  }
+});
+
+document.addEventListener(&#39;keyup&#39;, function keyupHandler(event) {
+  if (event.keyCode == 16) {
+    shiftKey = false;
+  }
+});
+</code></pre><p>Las funciones de los eventos <code>keydown</code> y <code>keyup</code> tienen un parámetro <code>event</code>. Este parámetro se pasa automáticamente a todas las funciones que se usan como manejadores de eventos. Usando la propiedad <code>keyCode</code> del objeto <code>event</code> se puede saber que tecla se acaba de pulsar. Cada tecla tiene un código numérico distinto, el de la tecla shift es el 16.
+El funcionamiento es el siguiente. Cuando se pulsa una tecla, si es la tecla shift se asigna el valor <code>true</code> a la variable <code>shiftKey</code>. Cuando se suelta una tecla, si es la tecla shift se vuelve a poner el valor <code>false</code> a la variable <code>shiftKey</code>.</p>
+<p>El último paso es marcar todos los checkbox que estén entre los dos últimos que se marcaron. Para conseguir esto se puede usar el evento <code>click</code> o el evento <code>change</code> de los checkbox. Yo he elegido el evento change porque está pensado para indicar que ha cambiado el valor del checkbox. El evento click tendría la ventaja de que en el objeto <code>event</code> va a existir la propiedad <code>shiftKey</code> que indica si está pulsada la tecla shift.</p>
+<pre><code>document.addEventListener(&#39;change&#39;, function changeHandler(event) {
+  var target = event.target;
+
+  if (target.tagName.toLowerCase() == &#39;input&#39; &amp;&amp; target.type == &#39;checkbox&#39;) {
+    var targetIndex = checkboxes.indexOf(target);
+
+    if (target.checked &amp;&amp; shiftKey &amp;&amp; lastCheckedIndex != null) {
+      checkboxes
+        .slice(
+          Math.min(targetIndex, lastCheckedIndex) + 1,
+          Math.max(targetIndex, lastCheckedIndex)
+        )
+        .forEach(function(item) {
+          item.checked = true;
+        });
+    }
+
+    lastCheckedIndex = target.checked ? targetIndex : null;
+  }
+});
+</code></pre><p>Lo primero que se hace en este evento es comprobar si el evento change ha ocurrido en un checkbox. Para esto se usa la propiedad <code>target</code> del objeto <code>event</code>, que contiene el elemento que ha provocado el evento. Con las propiedades <code>tagName</code> y <code>type</code> del objeto <code>target</code> se puede saber si el elemento es un <code>input</code> y si es de tipo <code>checkbox</code>. Después, usando el método <code>indexOf</code>, se obtine el índice que ocupa el checkbox dentro del array <code>checkboxes</code>. Lo siguiente es comprobar si el checkbox se ha marcado, la tecla shift estaba pulsada y se tiene el índice del último checkbox que se ha marcado. Si esta comprobación da como resultado <code>true</code>, usando el método <code>slice</code>, se crea un array con todos los checkbox que hay entre el que se acaba de marcar y el último que se marcó. Se recorre este array usando el método <code>forEach</code> para marcar todos los checkbox. Lo último que se hace en el evento change es guardar, en la variable <code>lastCheckedIndex</code>, el índice del checkbox que ha lanzado el evento <code>change</code>, siempre que este checkbox se haya marcado y no desmarcado. En caso de que el checkbox haya sido desmarcado, se asigna el valor <code>null</code> a la variable <code>lastCheckedIndex</code>. Esto sirve para que no se marquen checkbox si lo último que se hizo fue desmarcar antes de marcar uno con la tecla shift pulsada.</p>
+<p>El código completo queda así:</p>
+<pre><code>(function init(window, document) {
+  var shiftKey = false;
+  var checkboxes;
+  var lastCheckedIndex;
+
+  window.addEventListener(&#39;load&#39;, function onLoadHandler() {
+    var checkboxNodeList = document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;);
+    checkboxes = Array.prototype.slice.call(checkboxNodeList);
+  });
+
+  document.addEventListener(&#39;change&#39;, function changeHandler(event) {
+    var target = event.target;
+
+    if (target.tagName.toLowerCase() == &#39;input&#39; &amp;&amp; target.type == &#39;checkbox&#39;) {
+      var targetIndex = checkboxes.indexOf(target);
+
+      if (target.checked &amp;&amp; shiftKey &amp;&amp; lastCheckedIndex != null) {
+        checkboxes
+          .slice(
+            Math.min(targetIndex, lastCheckedIndex) + 1,
+            Math.max(targetIndex, lastCheckedIndex)
+          )
+          .forEach(function(item) {
+            item.checked = true;
+          });
+      }
+
+      lastCheckedIndex = target.checked ? targetIndex : null;
+    }
+  });
+
+  document.addEventListener(&#39;keydown&#39;, function keydownHandler(event) {
+    if (event.keyCode == 16) {
+      shiftKey = true;
+    }
+  });
+
+  document.addEventListener(&#39;keyup&#39;, function keyupHandler(event) {
+    if (event.keyCode == 16) {
+      shiftKey = false;
+    }
+  });
+})(window, document);
+</code></pre><p>Se pueden encontrar otras soluciones al reto <a href="http://codepen.io/collection/DQbKJa/">aquí</a>.</p>
+
+  </article>
+    </main>
+  </body>
+</html>
