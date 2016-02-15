@@ -84,7 +84,7 @@ document.addEventListener('change', function changeHandler(event) {
 
 Lo primero que se hace en este evento es comprobar si el evento change ha ocurrido en un checkbox. Para esto se usa la propiedad `target` del objeto `event`, que contiene el elemento que ha provocado el evento. Con las propiedades `tagName` y `type` del objeto `target` se puede saber si el elemento es un `input` y si es de tipo `checkbox`. Después, usando el método `indexOf`, se obtine el índice que ocupa el checkbox dentro del array `checkboxes`. Lo siguiente es comprobar si el checkbox se ha marcado, la tecla shift estaba pulsada y se tiene el índice del último checkbox que se ha marcado. Si esta comprobación da como resultado `true`, usando el método `slice`, se crea un array con todos los checkbox que hay entre el que se acaba de marcar y el último que se marcó. Se recorre este array usando el método `forEach` para marcar todos los checkbox. Lo último que se hace en el evento change es guardar, en la variable `lastCheckedIndex`, el índice del checkbox que ha lanzado el evento `change`, siempre que este checkbox se haya marcado y no desmarcado. En caso de que el checkbox haya sido desmarcado, se asigna el valor `null` a la variable `lastCheckedIndex`. Esto sirve para que no se marquen checkbox si lo último que se hizo fue desmarcar antes de marcar uno con la tecla shift pulsada.
 
-El código completo queda así:
+El javascript al final queda así:
 
 ```
 (function init(window, document) {
@@ -132,4 +132,4 @@ El código completo queda así:
 })(window, document);
 ```
 
-Se pueden encontrar otras soluciones al reto [aquí](http://codepen.io/collection/DQbKJa/).
+El código completo de mi solución se puede ver en [GitHub](https://github.com/jrruiz/wesbos-checkbox-challenge). También hay una recopilación de soluciones [aquí](http://codepen.io/collection/DQbKJa/).

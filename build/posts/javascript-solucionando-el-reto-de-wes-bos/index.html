@@ -63,7 +63,7 @@ El funcionamiento es el siguiente. Cuando se pulsa una tecla, si es la tecla shi
   }
 });
 </code></pre><p>Lo primero que se hace en este evento es comprobar si el evento change ha ocurrido en un checkbox. Para esto se usa la propiedad <code>target</code> del objeto <code>event</code>, que contiene el elemento que ha provocado el evento. Con las propiedades <code>tagName</code> y <code>type</code> del objeto <code>target</code> se puede saber si el elemento es un <code>input</code> y si es de tipo <code>checkbox</code>. Después, usando el método <code>indexOf</code>, se obtine el índice que ocupa el checkbox dentro del array <code>checkboxes</code>. Lo siguiente es comprobar si el checkbox se ha marcado, la tecla shift estaba pulsada y se tiene el índice del último checkbox que se ha marcado. Si esta comprobación da como resultado <code>true</code>, usando el método <code>slice</code>, se crea un array con todos los checkbox que hay entre el que se acaba de marcar y el último que se marcó. Se recorre este array usando el método <code>forEach</code> para marcar todos los checkbox. Lo último que se hace en el evento change es guardar, en la variable <code>lastCheckedIndex</code>, el índice del checkbox que ha lanzado el evento <code>change</code>, siempre que este checkbox se haya marcado y no desmarcado. En caso de que el checkbox haya sido desmarcado, se asigna el valor <code>null</code> a la variable <code>lastCheckedIndex</code>. Esto sirve para que no se marquen checkbox si lo último que se hizo fue desmarcar antes de marcar uno con la tecla shift pulsada.</p>
-<p>El código completo queda así:</p>
+<p>El javascript al final queda así:</p>
 <pre><code>(function init(window, document) {
   var shiftKey = false;
   var checkboxes;
@@ -107,7 +107,7 @@ El funcionamiento es el siguiente. Cuando se pulsa una tecla, si es la tecla shi
     }
   });
 })(window, document);
-</code></pre><p>Se pueden encontrar otras soluciones al reto <a href="http://codepen.io/collection/DQbKJa/">aquí</a>.</p>
+</code></pre><p>El código completo de mi solución se puede ver en <a href="https://github.com/jrruiz/wesbos-checkbox-challenge">GitHub</a>. También hay una recopilación de soluciones <a href="http://codepen.io/collection/DQbKJa/">aquí</a>.</p>
 
   </article>
     </main>
