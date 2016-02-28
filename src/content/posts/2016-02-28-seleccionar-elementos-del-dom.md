@@ -112,7 +112,59 @@ Si tomamos el nodo `<p>` como referencia:
 * `previousSibling` devuelve `null`.
 * `nextSibling` devuelve `null`.
 
-ALGÚN EJEMPLO AQUÍ
+Usando estos métodos se puede hacer una función recursiva para recorrer el árbol del DOM. Por ejemplo, se puede hacer una función para contar cuántos nodos de texto hay dentro de un nodo.
+
+```
+function countTextNodes(node) {
+  var children = Array.prototype.slice.call(node.childNodes);
+  var total = 0;
+
+  if (node.nodeType != document.ELEMENT_NODE) {
+    return total;
+  }
+
+  children.forEach(function(child) {
+    if (child.nodeType == document.TEXT_NODE) {
+      total++;
+    }
+    else if (child.nodeType == document.ELEMENT_NODE) {
+      total += countTextNodes(child);
+    }
+  });
+
+  return total;
+}
+
+countTextNodes(document.body); // 7
+```
+
+La función `countTextNodes` recibe un nodo como parámetro. Para poder operar de forma más sencilla con los nodos hijos, se convierte la propiedad `childNodes` en un array. Si el nodo que tenemos no es del tipo `ELEMENT_NODE` la función termina porque los nodos de tipo texto y de tipo comentario no tienen nodos hijos. Después se recorren todos los nodos hijos usando la función `forEach` de los objetos array. Por cada nodo hijo, se comprueba su tipo, si es de tipo texto, se suma 1 al total. Si el nodo es un elemento HTML, se vuelve a llamar a la función `countTextNodes` pasándo como argumento el nodo hijo actual. El resultado de esta llamada se acumula en el total. El resultado de esta función puede parecer erróneo. Pero hay que tener en cuenta que los navegadores cuenta cada salto de línea entre dos etiquetas como un nodo de texto vacío.
+
+Esto se puede solucionar usando la propiedad `nodeValue`. En los nodos de tipo texto, esta propiedad contiene un string con el texto del nodo. Para comprobar que el nodo contiene algo se usa la expresión regular `/\S/`. Con esta expresión regular se puede saber si el texto contiene algún caracter que no sea de espacio, salto de línea o tabulación.
+
+```
+function countTextNodes(node) {
+  var children = Array.prototype.slice.call(node.childNodes);
+  var total = 0;
+
+  if (node.nodeType != document.ELEMENT_NODE && /\S/.test(child.nodeValue)) {
+    return total;
+  }
+
+  children.forEach(function(child) {
+    if (child.nodeType == document.TEXT_NODE) {
+      total++;
+    }
+    else if (child.nodeType == document.ELEMENT_NODE) {
+      total += countTextNodes(child);
+    }
+  });
+
+  return total;
+}
+
+countTextNodes(document.body); // 4
+```
 
 ## Seleccionar nodos del DOM
 
@@ -124,3 +176,4 @@ ALGÚN EJEMPLO AQUÍ
 * [Professional JavaScript for web developers](http://www.amazon.es/Professional-JavaScript-Developers-Nicholas-Zakas/dp/1118026691)
 * [https://developer.mozilla.org/en/docs/Web/API/Node/nodeType](https://developer.mozilla.org/en/docs/Web/API/Node/nodeType)
 * [https://developer.mozilla.org/en-US/docs/Web/API/NodeList](https://developer.mozilla.org/en-US/docs/Web/API/NodeList)
+* [https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeValue](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeValue)
