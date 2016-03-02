@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript: moverse por los elementos del DOM | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="javascript-moverse-por-los-elementos-del-dom">JavaScript: moverse por los elementos del DOM</h1>
+<p>El DOM es la representación jerárquica en forma de árbol de un documento. La palabra DOM es una sigla que en inglés significan Document Object Model, que en español sería Modelo de Objecto del Documento.</p>
+<p>Cuando un navegador web recibe un documento HTML, construye el DOM a partir del código de este documento. El DOM se usa para dibujar la página web en la pantalla. Cada uno de los elementos HTML es un nodo dentro del DOM.</p>
+<p>Para acceder a los nodos del DOM se usa la variable global <code>document</code>. La propiedad <code>documentElement</code> del objeto <code>document</code> representa a la etiqueta <code>&lt;html&gt;</code>. Este objeto, también tiene las propiedades <code>head</code> y <code>body</code> para representar a las etiquetas <code>&lt;head&gt;</code> y <code>&lt;body&gt;</code>.</p>
+<h2 id="jerarqu-a-de-los-nodos">Jerarquía de los nodos</h2>
+<p>Cada nodo del DOM puede contener otros nodos hijos. Y estos nodos hijos pueden contener otros nodos hijos. Para representar estas relaciones, el navegador crea una estructura en forma de árbol.</p>
+<pre><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Document title&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;My home page&lt;/h1&gt;
+    &lt;p&gt;Hello &lt;span&gt;world&lt;/span&gt;!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>Este documento HTML se puede representar en forma de árbol de la siguiente forma.</p>
+<pre><code>DOM
+|
+|__ html
+    |
+    |__ head
+    |   |
+    |   |__ title
+    |        |
+    |        |__ Document title
+    |
+    |__ body
+        |
+        |__ h1
+        |   |
+        |   |__ My home page
+        |
+        |__ p
+            |
+            |__ Hello
+            |
+            |__ span
+            |   |
+            |   |__ world
+            |
+            |__ !
+</code></pre><p>Cada nodo del árbol puede ser una etiqueta HTML, un nodo de texto o un comentario. Se puede identificar cada tipo de nodo comprobando el valor de su propiedad <code>nodeType</code>. El valor de esta propiedad es numérico. Cada valor de los tipos de nodos están definidos como constantes del objeto <code>document</code>. Los valores para los tipos de nodos más comunes son estos:</p>
+<ul>
+<li>Valor: <code>1</code>. Representa una etiqueta de HTML. Este valor está definido en la constante <code>document.ELEMENT_NODE</code>.</li>
+<li>Valor: <code>3</code>. Representa un nodo de texto. Este valor está definido en la constante <code>document.TEXT_NODE</code>.</li>
+<li>Valor: <code>8</code>. Representa un comentario. Este valor está definido en la constante <code>document.COMMENT_NODE</code>.</li>
+</ul>
+<h2 id="moverse-por-el-rbol-del-dom">Moverse por el árbol del DOM</h2>
+<p>Cada nodo del DOM tiene enlaces a los nodos cercanos para moverse por el árbol del DOM. Estos enlaces a los nodos cercanos están representados con estas propiedades del nodo:</p>
+<ul>
+<li><code>parentNode</code> devuelve el nodo padre de este nodo.</li>
+<li><code>childNodes</code> devuelve un objeto <code>NodeList</code> con los hijos del nodo. Se puede usar la notación de los arrays para acceder a los nodos de un <code>NodeList</code> (<code>nodeList[0]</code>). La propiedad <code>length</code> de este objeto tiene indica cuántos nodos contiene.</li>
+<li><code>firstChild</code> devuelve el primer nodo hijo del nodo actual. Si el nodo no tiene hijos devuelve <code>null</code>.</li>
+<li><code>lastChild</code> devuelve el último nodo hijo del nodo actual. Si el nodo no tiene hijos devuelve <code>null</code>.</li>
+<li><code>previousSibling</code> devuelve el nodo anterior a este que pertenezca al mismo padre. Si el nodo es el primer hijo devuelve <code>null</code>.</li>
+<li><code>nextSibling</code> devuelve el nodo siguiente a este que pertenezca al mismo padre. Si el nodo es el último hijo devuelve <code>null</code>.</li>
+</ul>
+<p>El código de este ejemplo:</p>
+<pre><code>&lt;p&gt;Hello &lt;span&gt;world&lt;/span&gt;.&lt;/p&gt;
+</code></pre><p>Se puede representar en forma de árbol así:</p>
+<pre><code>           p
+  _________|_________
+  |        |        |
+Hello     span      .
+           |
+         world
+</code></pre><p>Si tomamos el nodo <code>&lt;span&gt;</code> como referencia:</p>
+<ul>
+<li><code>parentNode</code> devuelve el nodo <code>&lt;p&gt;</code>.</li>
+<li><code>childNodes</code> devuelve un objeto <code>nodeList</code>. Este nodeList contiene un nodo de texto con la palabra &quot;world&quot;.</li>
+<li><code>firstChild</code> devuelve el nodo de texto que contiene &quot;world&quot;.</li>
+<li><code>lastChild</code> devuelve el nodo de texto que contiene &quot;world&quot;.</li>
+<li><code>previousSibling</code> devuelve el nodo de texto que contiene &quot;Hello&quot;.</li>
+<li><code>nextSibling</code> devuelve el nodo de texto que contiene &quot;.&quot;.</li>
+</ul>
+<p>Si tomamos el nodo <code>&lt;p&gt;</code> como referencia:</p>
+<ul>
+<li><code>parentNode</code> devuelve <code>null</code>.</li>
+<li><code>childNodes</code> devuelve un objeto <code>nodeList</code>. Este <code>nodeList</code> contiene tres nodos, dos nodos de texto y una etiqueta.</li>
+<li><code>firstChild</code> devuelve el nodo de texto que contiene &quot;Hello&quot;.</li>
+<li><code>lastChild</code> devuelve el nodo de texto que contiene &quot;.&quot;.</li>
+<li><code>previousSibling</code> devuelve <code>null</code>.</li>
+<li><code>nextSibling</code> devuelve <code>null</code>.</li>
+</ul>
+<p>Usando estos métodos se puede hacer una función recursiva para recorrer el árbol del DOM. Por ejemplo, se puede hacer una función para contar cuántos nodos de texto hay dentro de un nodo.</p>
+<pre><code>function countTextNodes(node) {
+  var children = Array.prototype.slice.call(node.childNodes);
+  var total = 0;
+
+  if (node.nodeType != document.ELEMENT_NODE) {
+    return total;
+  }
+
+  children.forEach(function(child) {
+    if (child.nodeType == document.TEXT_NODE) {
+      total++;
+    }
+    else if (child.nodeType == document.ELEMENT_NODE) {
+      total += countTextNodes(child);
+    }
+  });
+
+  return total;
+}
+
+countTextNodes(document.body); // 7
+</code></pre><p>La función <code>countTextNodes</code> recibe un nodo como parámetro. Para poder operar de forma más sencilla con los nodos hijos, se convierte la propiedad <code>childNodes</code> en un array. Si el nodo que tenemos no es del tipo <code>ELEMENT_NODE</code> la función termina porque los nodos de tipo texto y de tipo comentario no tienen nodos hijos. Después se recorren todos los nodos hijos usando la función <code>forEach</code> de los objetos array. Por cada nodo hijo, se comprueba su tipo, si es de tipo texto, se suma 1 al total. Si el nodo es un elemento HTML, se vuelve a llamar a la función <code>countTextNodes</code> pasándo como argumento el nodo hijo actual. El resultado de esta llamada se acumula en el total. El resultado de esta función puede parecer erróneo. Pero hay que tener en cuenta que los navegadores cuenta cada salto de línea entre dos etiquetas como un nodo de texto vacío.</p>
+<p>Esto se puede solucionar usando la propiedad <code>nodeValue</code>. En los nodos de tipo texto, esta propiedad contiene un string con el texto del nodo. Para comprobar que el nodo contiene algo se usa la expresión regular <code>/\S/</code>. Con esta expresión regular se puede saber si el texto contiene algún caracter que no sea de espacio, salto de línea o tabulación.</p>
+<pre><code>function countTextNodes(node) {
+  var children = Array.prototype.slice.call(node.childNodes);
+  var total = 0;
+
+  if (node.nodeType != document.ELEMENT_NODE &amp;&amp; /\S/.test(child.nodeValue)) {
+    return total;
+  }
+
+  children.forEach(function(child) {
+    if (child.nodeType == document.TEXT_NODE) {
+      total++;
+    }
+    else if (child.nodeType == document.ELEMENT_NODE) {
+      total += countTextNodes(child);
+    }
+  });
+
+  return total;
+}
+
+countTextNodes(document.body); // 4
+</code></pre><h2 id="seleccionar-nodos-del-dom">Seleccionar nodos del DOM</h2>
+<p>Se puede recorrer el DOM usando las propiedades anteriores. Pero encontrar un nodo específico de esta forma puede ser muy costoso.</p>
+<p>Para esto hay unos métodos que tienen todos los nodos. Los métodos son <code>getElementsByTagName</code>, <code>getElementById</code> y <code>getElementsByClassName</code>. Estos métodos buscan nodos dentro del DOM. Se pueden usar sobre un nodo o sobre el objeto <code>document</code>. Cuando se usan sobre <code>document</code> el resultado se busca por todo el DOM. Si se usan en un nodo específico, la búsqueda empezará en los hijos del nodo e irá bajando niveles.</p>
+<p>Los resultados de estos métodos se actualizan con los cambios al DOM. Por ejemplo, si obtenemos un nodo con <code>getElementById</code> y ese nodo lo modifica otro script, el cambio se verá reflejado en el objeto que hemos obtenido.</p>
+<h3 id="getelementsbytagname">getElementsByTagName</h3>
+<p>Este método recibe como argumento un string con el nombre del tag que se quiere buscar. Devuelve un objeto similar a un <code>NodeList</code> con todos los nodos con el nombre del tag.</p>
+<pre><code>&lt;p&gt;A paragraph with a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;script&gt;
+  var linkList = document.getElementsByTagName(&#39;a&#39;);
+
+  console.log(linkList[0]); // &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;
+&lt;/script&gt;
+</code></pre><h3 id="getelementsbyclassname">getElementsByClassName</h3>
+<p>Es igual que <code>getElementsByTagName</code>, pero devuelve una lista de nodos que tengan la clase que se le ha pasado como argumento.</p>
+<pre><code>&lt;p class=&quot;justify&quot;&gt;A paragraph with a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;justify&quot;&gt;Another paragraph without a link&lt;/p&gt;
+&lt;div class=&quot;justify&quot;&gt;A justified div&lt;/div&gt;
+
+&lt;script&gt;
+  var justifiedNodes = document.getElementsByClassName(&#39;justify&#39;);
+
+  console.log(justifiedNodes); // &lt;p clas=&quot;justify&quot;&gt;...&lt;/p&gt;, &lt;p clas=&quot;justify&quot;&gt;...&lt;/p&gt;, &lt;div clas=&quot;justify&quot;&gt;...&lt;/div&gt;
+&lt;/script&gt;
+</code></pre><h3 id="getelementbyid">getElementById</h3>
+<p>Este método recibe como argumento un string con el id de algún elemento HTML. Devuelve como resultado el nodo que tenga ese id.</p>
+<pre><code>&lt;p class=&quot;justify&quot;&gt;A paragraph with a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;justify&quot; id=&quot;the-paragraph&quot;&gt;Another paragraph without a link&lt;/p&gt;
+
+&lt;script&gt;
+  var theParagraph = document.getElementById(&#39;the-paragraph&#39;);
+
+  console.log(theParagraph); // theParagraph
+&lt;/script&gt;
+</code></pre><h2 id="seleccionar-nodos-con-selectores-css">Seleccionar nodos con selectores CSS</h2>
+<p>Además de poder obtener nodos del DOM con los métodos anteriores, también se pueden obtener usando selectores CSS. Estos métodos son <code>querySelector</code> y <code>querySelectorAll</code>.</p>
+<p>El funcionamiento de los dos métodos es igual. Se les pasa un string con un selector CSS como argumento. El resultado que devuelven es distinto. El método <code>querySelector</code> devuelve el primer nodo que coincida con el selector. <code>querySelectorAll</code> devuelve un <code>nodeList</code> con todos los nodos que coincidan con el selector.</p>
+<p>A diferencia de los métodos anteriores, los objetos que devuelve estos, no se actualizan con los cambios al DOM.</p>
+<pre><code>&lt;p class=&quot;justify&quot;&gt;A paragraph with a &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;justify&quot; id=&quot;the-paragraph&quot;&gt;Another paragraph without a link&lt;/p&gt;
+
+&lt;script&gt;
+  var paragraphs = document.querySelectorAll(&#39;p&#39;);
+  var firstParagraph = document.querySelector(&#39;p&#39;);
+
+  console.log(paragraphs); // &lt;p class=&quot;justify&quot;&gt;...&lt;/p&gt;, &lt;p class=&quot;justify&quot; id=&quot;the-paragraph&quot;&gt;...&lt;/p&gt;
+  console.log(firstParagraph); // &lt;p class=&quot;justify&quot;&gt;...&lt;/p&gt;
+&lt;/script&gt;
+</code></pre><h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="http://eloquentjavascript.net/">Eloquent Javascript</a>.</li>
+<li><a href="http://www.amazon.es/Professional-JavaScript-Developers-Nicholas-Zakas/dp/1118026691">Professional JavaScript for web developers</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/API/Node/nodeType">https://developer.mozilla.org/en/docs/Web/API/Node/nodeType</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/NodeList">https://developer.mozilla.org/en-US/docs/Web/API/NodeList</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeValue">https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeValue</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName">https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName">https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById">https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById</a></li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
