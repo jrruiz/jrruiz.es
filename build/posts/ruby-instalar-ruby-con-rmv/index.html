@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: instalar Ruby con RMV | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-instalar-ruby-con-rmv">Ruby: instalar Ruby con RMV</h1>
+<p>RVM es un gestor de versiones de Ruby. Funciona en sitemas UNIX. Permite instalar y matener distintas versiones de Ruby en el mismo sistema. Con RVM también se pueden tener varios grupos de gemas para cada versión.</p>
+<p>Para instalar RVM hay que ejecutar dos comandos en la consola:</p>
+<pre><code>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable
+</code></pre><p>Antes de instalar Ruby, se pueden ver las versiones disponibles con el comando:</p>
+<pre><code>rvm list known
+</code></pre><p>Se puede instalar cualquier versión de la lista que devuelve el comando anterior. Para instalar una versión de Ruby se usa el comando:</p>
+<pre><code>rvm install 2.3.0
+</code></pre><p>Cuando se haya terminado la instalación de Ruby, se puede comprobar la versión instalada.</p>
+<pre><code>ruby -v
+</code></pre><p>Cuando se tienen distintas versiones de Ruby instaladas, se puede indicar a RVM la versión por defecto usando la opción <code>--default</code>.</p>
+<pre><code>rmv --default use 2.3.0
+</code></pre><p>Para cambiar la versión de Ruby que se está usando actualmente:</p>
+<pre><code>rvm use 2.3.0
+</code></pre><p>Se puede ver todas las versiones de Ruby instaladas con:</p>
+<pre><code>rvm list
+</code></pre><p>Se puede encontrar más información en la <a href="https://rvm.io/">web de RVM</a>.</p>
+
+  </article>
+    </main>
+  </body>
+</html>

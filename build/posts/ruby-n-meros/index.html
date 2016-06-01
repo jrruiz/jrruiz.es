@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: números | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-n-meros">Ruby: números</h1>
+<p>En Ruby hay dos tipos de números, integers y floats.</p>
+<p>Los que no tienen decimales son enteros o <code>integers</code>. Ejemplos de números enteros:</p>
+<pre><code>1
+9348574
+</code></pre><p>Los números con decimales se llaman <code>floats</code>. Se escriben con un punto para separar la parte entera de la decimal. Ejemplos de números decimales:</p>
+<pre><code>1.567
+3.14
+</code></pre><p>Se pueden usar números decimales en notación científica usando la letra <code>e</code> seguida del exponente. El número <code>1e2</code> en notación científica es igual a <code>100.0</code>.</p>
+<p>Los números que empiezan con un guión son negativos.</p>
+<pre><code>-123
+-1.47
+</code></pre><p>No se pueden usar comas en los números. Se pueden separar los miles de un número con un guión bajo <code>123_456_789</code>.</p>
+<p>Se puede cambiar el tipo de número de entero a decimal y viceversa. Para hacer que un número decimal sea entero se usa <code>.to_i</code>. Para que un número entero sea decimal se usa <code>.to_f</code>.</p>
+<pre><code>3.141592.to_i
+=&gt; 3
+
+2.to_f
+=&gt; 2.0
+</code></pre><h2 id="operaciones-matem-ticas">Operaciones matemáticas</h2>
+<p>Se pueden hacer operaciones matemáticas con Ruby usando los operadores <code>+ - * / % **</code>. Para sumar se usa <code>+</code>, para las restas <code>-</code>. Las multiplicaciones se hacen con <code>*</code> y las divisiones con <code>/</code>. El operador <code>%</code>, se conoce como módulo, da como resultado el resto de la división de dos números. El operador <code>**</code> sirve para hacer una exponenciación o elevar un número a una potencia.</p>
+<pre><code>1 + 1
+=&gt; 2
+
+4 - 9
+=&gt; -5
+
+2 * 2
+=&gt; 4
+
+19 / 2
+=&gt; 9
+
+19 % 2
+=&gt; 1
+
+3 ** 4
+=&gt; 81
+</code></pre><p>La división operación da como resultado 9. Esto es porque Ruby devuelve un resultado del mismo tipo que los números con los que se opera. Para que de un resultado decimal, al menos uno de los números tiene que ser decimal.</p>
+<pre><code>19 / 2.0
+=&gt; 9.5
+</code></pre><p>Se pueden combinar varias operaciones en una misma expresión. También se pueden usar paréntesis para hacer operaciones más complejas.</p>
+<pre><code>5 + 1 * 2
+=&gt; 7
+
+(5 + 1) * 2
+=&gt; 12
+</code></pre><h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_01.html">Learn to program</a>.</li>
+<li><a href="http://poignant.guide/book/chapter-3.html">Why&#39;s (Poignant) Guide to Ruby</a>.</li>
+<li><a href="http://www.eriktrautman.com/posts/ruby-explained-numbers-operators-and-expressions">Ruby Explained: Numbers, Operators and Expressions</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

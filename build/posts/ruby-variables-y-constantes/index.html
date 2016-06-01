@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: variables y constantes | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-variables-y-constantes">Ruby: variables y constantes</h1>
+<h2 id="variables">Variables</h2>
+<p>Las variables sirven para dar un nombre a algún dato y poder usarlo después. El nombre de una variable puede tener letras, números y guiones bajos. Además no puede empezar con un número ni con una letra mayúscula.</p>
+<pre><code>variable_1
+var2
+variableNumberThree
+</code></pre><p>Para guardar un dato en una variable se usa el operador <code>=</code>. Guardar un dato en una variable se llama asignación.</p>
+<pre><code>number_1 = 1
+my_string = &quot;string en una variable&quot;
+</code></pre><p>Se pueden hacer operaciones con variables igual que con los números y los strings.</p>
+<pre><code>price = 10
+tax = 21
+total = price * (tax.to_f / 100 + 1)
+=&gt; total = 12.1
+</code></pre><pre><code>saludo = &quot;Hola&quot;
+despedida = &quot;Adiós&quot;
+saludo + &quot;. &quot; + despedida
+=&gt; Hola. Adiós
+</code></pre><p>Una variable puede cambiar de valor después de haber sido asignada. Se hace con una asignación, igual que cuando no tiene valor.</p>
+<pre><code>number_1 = 1
+sum = number + 1
+=&gt; sum = 2
+
+sum = number + 2
+=&gt; sum = 3
+
+sum = sum + 1
+=&gt; sum = 4
+</code></pre><h2 id="constantes">Constantes</h2>
+<p>Las constantes son igual que las variables pero su nombre tiene que empezar con una letra mayúscula.</p>
+<pre><code>Constant_string = &quot;primera constante&quot;
+ConstantNumber = 7
+UPPERCASE_CONSTANT = &quot;constante con todas las letras en mayúsculas&quot;
+</code></pre><p>Las constantes no pueden cambiar su valor después de haber sido asignadas. Si se cambia el valor de una constante, Ruby dará un aviso.</p>
+<pre><code>CONSTANT_NUMBER = 7
+CONSTANT_NUMBER = 2
+=&gt; warning: already initialized constant CONSTANT_NUMBER
+=&gt; warning: previous definition of CONSTANT_NUMBER was here
+</code></pre><p>Aunque Ruby avise de que se ha cambiado una constante, sí que se cambiar su valor.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_03.html">Learn to program</a>.</li>
+<li><a href="http://poignant.guide/book/chapter-3.html">Why&#39;s (Poignant) Guide to Ruby</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>

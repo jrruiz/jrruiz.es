@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: strings | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-strings">Ruby: strings</h1>
+<p>Los strings son caracteres rodeados por comillas dobles o simples.Se puede crear un string vacío poniendo la comilla de inicio del final sin nada entre medias.</p>
+<pre><code>&quot;Esto es un string con comillas dobles!&quot;
+=&gt; Esto es un string con comillas dobles!
+
+&#39;Esto es un string con comillas simples!&#39;
+=&gt; Esto es un string con comillas simples!
+
+&quot;&quot;
+=&gt;
+</code></pre><p>Los strings pueden contener cualquier tipo de caracter. Para usar comillas dentro de un string, hay que escaparlas poniendo una barra invertida delante. Sólo se necesita hacer esto si las comillas son iguales que las que rodean al string.</p>
+<pre><code>&quot;string con \&quot;comillas\&quot; dobles&quot;
+=&gt; string con &quot;comillas&quot; dobles
+
+&quot;string con &#39;comillas&#39; simples&quot;
+=&gt; string con &#39;comillas&#39; simples
+
+&#39;string con \&#39;comillas\&#39; simples&#39;
+=&gt; string con &#39;comillas&#39; simples
+
+&#39;string con &quot;comillas&quot; dobles&#39;
+=&gt; string con &quot;comillas&quot; dobles
+</code></pre><p>Como la barra invertida tiene un significado especial dentro de un string, para poder usarla dentro de un string, hay que escaparla poniendo otra barra delante.</p>
+<pre><code>&quot;string con una barra invertida \\&quot;
+=&gt; string con una barra invertida \
+</code></pre><p>En los strings con comillas dobles se pueden intercalar valores usando una notación especial. Se escribe la cadena <code>#{}</code> con la expresión que se quiere intercalar en el string entre las llaves.</p>
+<pre><code>&quot;1 + 1 = #{1 + 1}&quot;
+=&gt; 1 + 1 = 2
+</code></pre><h2 id="operaciones-con-strings">Operaciones con strings</h2>
+<p>Se pueden unir dos strings usando el operador de la suma entre ellas. Igual que si se sumaran dos números.</p>
+<pre><code>&quot;hola &quot; + &quot;desde Ruby&quot;
+=&gt; hola desde Ruby
+</code></pre><p>Los strings se pueden multiplicar usando el operador de multiplicación entre un string y un número. No se puede multiplicar un string por otro ni un número por un string.</p>
+<pre><code>&quot;Ruby&quot; * 3
+=&gt; RubyRubyRuby
+
+3 * &quot;Ruby&quot;
+=&gt; TypeError: String can&#39;t be coerced into Fixnum
+
+&quot;Ruby&quot; * &quot;4&quot;
+=&gt; TypeError: no implicit conversion of String into Integer
+</code></pre><p>Para convertir un string en un número entero se usa <code>.to_i</code>. Para convertirlo en un número decimal se usa <code>.to_f</code>.</p>
+<pre><code>&quot;Ruby&quot; * &quot;2&quot;.to_i
+=&gt; RubyRuby
+
+&quot;99&quot;.to_f + 1
+=&gt; 100.0
+</code></pre><h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_02.html">Learn to program</a>.</li>
+<li><a href="http://poignant.guide/book/chapter-3.html">Why&#39;s (Poignant) Guide to Ruby</a>.</li>
+<li><a href="http://www.eriktrautman.com/posts/ruby-explained-numbers-operators-and-expressions">Ruby Explained: Numbers, Operators and Expressions</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
