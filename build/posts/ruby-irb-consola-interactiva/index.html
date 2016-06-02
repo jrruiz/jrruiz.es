@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: IRB (consola interactiva) | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-irb-consola-interactiva-">Ruby: IRB (consola interactiva)</h1>
+<p>IRB    es la consola interactiva de Ruby. En ella se puede escribir código Ruby y la consola da el resultado. Para iniciarla se usa el comnado <code>irb</code> dentro de la terminal.</p>
+<pre><code>irb
+2.3.0 :001 &gt;
+</code></pre><p>La línea <code>2.3.0 :001 &gt;</code> es lo que saldrá en la consola al entrar en IRB. El número <code>2.3.0</code> indica la versión de Ruby que se está ejecutando. Se puede empezar a escribir en esa línea y al pulsar la tecla <code>enter</code> se ejecutará el código.</p>
+<h2 id="escribir-con-puts-y-print">Escribir con puts y print</h2>
+<p>El método <code>puts</code> escribe en la consola lo que se ponga detrás de él. Después de escribir, pone un salto de línea.</p>
+<pre><code>puts 1 + 1
+2
+=&gt; nil
+
+puts &quot;escribiendo con puts&quot;
+escribiendo con puts
+=&gt; nil
+</code></pre><p>La línea <code>=&gt; nil</code> quiere decir que el método <code>puts</code> devuelve como resultado <code>nil</code>.</p>
+<p>El método <code>print</code> es igual que <code>puts</code> pero no pone un salto de línea después de escribir.</p>
+<pre><code>print 1 + 1
+2 =&gt; nil
+
+puts &quot;escribiendo con print&quot;
+escribiendo con print =&gt; nil
+</code></pre><p>Igual que el método <code>puts</code>, <code>print</code> devuelve como resultado <code>nil</code>.</p>
+<h2 id="leer-con-gets-y-gets-chomp">Leer con gets y gets.chomp</h2>
+<p>El método <code>gets</code> lee una línea que se escriba en la consola. Después de leer, devuelve lo que ha leído. Se puede usar para leer una línea que escriba un usuario y guardarlo en una variable.</p>
+<pre><code>var = gets
+hola gets
+=&gt; &quot;hola gets\n&quot;
+
+var
+=&gt; &quot;hola gets\n&quot;
+</code></pre><p>El caracter <code>\n</code> que lee el método <code>gets</code> es el salto de línea que ocurre al pulsar la tecla <code>enter</code>. Se puede quitar el salto de línea de <code>gets</code> usando el método <code>chomp</code>.</p>
+<pre><code>var = gets.chomp
+hola gets
+=&gt; &quot;hola gets&quot;
+
+var
+=&gt; &quot;hola gets&quot;
+</code></pre><p><code>chomps</code> es un método que tienen todos los strings. Como <code>gets</code> siempre devuelve lo que ha leído como un string, se puede usar <code>chomp</code> sobre lo que devuelve <code>gets</code> para quitar el salto de línea.</p>
+<h2 id="ejecutar-un-archivo-ruby-desde-la-terminal">Ejecutar un archivo Ruby desde la terminal</h2>
+<p>A parte de usar IRB para ejecutar código Ruby, también se puede escribir en un archivo y ejecutarlo desde la consola. Para ejecutar el código Ruby de un archivo se usa el comando <code>ruby</code> seguido de la ruta al archivo.</p>
+<pre><code># file1.rb
+
+puts &quot;¿Cómo te llamas?&quot;
+name = gets.chomp
+puts &quot;Tu nombre es &quot; + name
+</code></pre><p>El archivo <code>file1.rb</code> del ejemplo anterior se puede ejecutar desde la terminal así:</p>
+<pre><code>ruby file1.rb
+¿Cómo te llamas?
+Ruby
+Tu nombre es Ruby
+</code></pre><p>Al ejecutar el comando <code>ruby file1.rb</code> lo primero que pasa es que <code>puts</code> escribe en la consola. Después el programa se queda esperando a que se escriba algo para que lo recoja <code>gets</code>. Cuando <code>gets</code> ha leído una línea, se quita el salto de línea con <code>chomp</code> y se asigna el resultado a la variable <code>name</code>. Por último se vuelve a ejecutar <code>puts</code> para que escriba un texto y lo que contenga la variable <code>name</code>.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_04.html">Learn to program</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
