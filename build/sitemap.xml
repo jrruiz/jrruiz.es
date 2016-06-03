@@ -2,10 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://jrruiz.es/</loc>
-    <lastmod>2016-06-02</lastmod>
+    <lastmod>2016-06-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+    <url>
+      <loc>http://jrruiz.es/posts/ruby-m-todos</loc>
+      <lastmod>2016-06-03</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
     <url>
       <loc>http://jrruiz.es/posts/ruby-irb-consola-interactiva</loc>
       <lastmod>2016-06-02</lastmod>

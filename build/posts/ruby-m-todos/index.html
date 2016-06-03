@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: métodos | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-m-todos">Ruby: métodos</h1>
+<p>Los métodos son acciones que actúan sobre un objeto. Los objetos son cualquier cosa en Ruby como los números y los strings. Los métodos se invocan poniendo un punto después de un objecto, seguido del nombre del método. El método siempre lo ejecuta el objeto que esté antes del punto.</p>
+<pre><code>1.to_f
+=&gt; 1.0
+</code></pre><p>En el ejemplo se llama al método <code>to_f</code> del objeto <code>1</code> para convertirlo en decimal.</p>
+<p>Los métodos pueden recibir parámetros que usan para obtener un resultado. Los parámetros de un método se colocan después de la llamada al método. Cuando se llama a un método, los parámetros se pueden colocar dentro de unos paréntesis para indicar que son parámetros del método.</p>
+<pre><code>&quot;hola&quot;.include?(&quot;la&quot;)
+=&gt; true
+</code></pre><p>También se pueden pasar parámetros a un método sin usar los paréntesis. Para hacer esto, se pone un espacio entre la llamada al método y los parámetros.</p>
+<pre><code>&quot;hola&quot;.include? &quot;la&quot;
+=&gt; true
+</code></pre><p>Para pasar más de un parámetro a un método se separan por comas.</p>
+<pre><code>&quot;hola&quot;.gsub /a/, &quot;A&quot;
+=&gt; holA
+</code></pre><p>Las operaciones matemáticas también son métodos. <code>1 + 1</code> es lo mismo que <code>1.+ 1</code>.</p>
+<pre><code>1.+ 1
+=&gt; 2
+
+1 + 1
+=&gt; 2
+
+2.* 3
+=&gt; 6
+</code></pre><p>Algunos métodos se llama sin usar un objeto seguido de un punto. Por ejemplo <code>puts</code>. Estos métodos pertenecen a un objeto que engloba a todo el programa de Ruby. Se puede acceder a este objeto usando la variable <code>self</code>.</p>
+<pre><code>puts &quot;método puts&quot;
+=&gt; método puts
+
+self.puts &quot;método puts&quot;
+=&gt; método puts
+</code></pre><p>Se pueden ver todos los métodos de un objeto llamando a su método <code>methods</code>.</p>
+<pre><code>&quot;esto es un objeto string&quot;.methods
+=&gt; [:include?, :unicode_normalize, :%, :to_c, :unicode_normalize!, :unicode_normalized?, :*, :+, :count, :partition, :unpack, :encode, :encode!, :next, :casecmp, :insert, :bytesize, :match, :succ!, :next!, :upto, :index, :rindex, :replace, :clear, :chr, :+@, :-@, :setbyte, :getbyte, :&lt;=&gt;, :&lt;&lt;, :scrub, :scrub!, :byteslice, :==, :===, :dump, :=~, :downcase, :[], :[]=, :upcase, :downcase!, :capitalize, :swapcase, :upcase!, :oct, :empty?, :eql?, :hex, :chars, :split, :capitalize!, :swapcase!, :concat, :codepoints, :reverse, :lines, :bytes, :prepend, :scan, :ord, :reverse!, :center, :sub, :freeze, :inspect, :intern, :end_with?, :gsub, :chop, :crypt, :gsub!, :start_with?, :rstrip, :sub!, :ljust, :length, :size, :strip!, :succ, :rstrip!, :chomp, :strip, :rjust, :lstrip!, :tr!, :chomp!, :squeeze, :lstrip, :tr_s!, :to_str, :to_sym, :chop!, :each_byte, :each_char, :each_codepoint, :to_s, :to_i, :tr_s, :delete, :encoding, :force_encoding, :sum, :delete!, :squeeze!, :tr, :to_f, :valid_encoding?, :slice, :slice!, :rpartition, :each_line, :b, :to_r, :ascii_only?, :hash, :&lt;, :&gt;, :&lt;=, :&gt;=, :between?, :instance_of?, :public_send, :instance_variable_get, :instance_variable_set, :instance_variable_defined?, :remove_instance_variable, :private_methods, :kind_of?, :instance_variables, :tap, :is_a?, :extend, :define_singleton_method, :to_enum, :enum_for, :!~, :respond_to?, :display, :send, :object_id, :method, :public_method, :singleton_method, :nil?, :class, :singleton_class, :clone, :dup, :itself, :taint, :tainted?, :untaint, :untrust, :trust, :untrusted?, :methods, :protected_methods, :frozen?, :public_methods, :singleton_methods, :!, :!=, :__send__, :equal?, :instance_eval, :instance_exec, :__id__]
+</code></pre><p>En la respuesta de este método, todos los nombres que aparecen con dos puntos delante son los métodos del objeto. Se puede encontrar iformación sobre qué hace cada método en la <a href="http://ruby-doc.org/">documentación de Ruby</a>.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_05.html">Learn to program</a>.</li>
+<li><a href="http://ruby-doc.org/">http://ruby-doc.org/</a>.</li>
+<li><a href="https://rubymonk.com/learning/books/1-ruby-primer/chapters/6-objects/lessons/35-introduction-to-objects">Ruby Monk - Introduction to Objects</a>.</li>
+<li><a href="https://rubymonk.com/learning/books/1-ruby-primer/chapters/19-ruby-methods/lessons/57-being-methodical">Ruby Monk - Beign Methodical</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
