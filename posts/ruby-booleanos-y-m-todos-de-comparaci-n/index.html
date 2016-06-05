@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: booleanos y métodos de comparación | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-booleanos-y-m-todos-de-comparaci-n">Ruby: booleanos y métodos de comparación</h1>
+<p>Los booleanos en Ruby son los valores <code>true</code> y <code>false</code>. Los valores booleanos indican si una expresión es verdadera o falsa. Los booleanos son objetos igual que los demás valores en Ruby.</p>
+<p>Los valores booleanos se generan cuando se comparan dos valores. Por ejemplo si se comparan dos números para saber cuál es mayor. Para hacer comparaciones se usan los métodos de comparación.</p>
+<p>Los métodos de comparación básicos en Ruby son <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code> y <code>&gt;=</code>.</p>
+<p>El método <code>==</code> comprueba si dos objetos son iguales. El contrario a este es <code>!=</code> que indica si dos objetos no son iguales. También existen el método <code>eql?</code> que es igual que <code>==</code>.</p>
+<pre><code>1 == 1
+=&gt; true
+
+1.eql? 1
+=&gt; true
+
+1 == 2
+=&gt; false
+
+1 != 2
+=&gt; true
+
+&quot;hola&quot; == &quot;hola&quot;
+=&gt; true
+
+&quot;hola&quot; == &quot;adios&quot;
+=&gt; false
+
+&quot;hola&quot; != &quot;adios&quot;
+=&gt; true
+</code></pre><p>El método <code>&lt;</code> comprueba si el objeto a su izquierda es menor que el de la derecha. El contrario a este método es <code>&gt;</code> que comprueba si el objeto de la izquierda es mayor que el de la derecha. Con los objetos de tipo string, estos métodos indican como menor al string que va antes alfabéticamente.</p>
+<pre><code>1 &lt; 2
+=&gt; true
+
+1 &gt; 2
+=&gt; false
+
+1 &lt; 1
+=&gt; false
+
+&quot;perro&quot; &gt; &quot;gato&quot;
+=&gt; true
+</code></pre><p>El método <code>&lt;=</code> comprueba si el objeto de la izquierda es menor o igual que el de la derecha. El método contrario es <code>&gt;=</code> que indica si el objeto de la izquierda es mayor o igual que el de la derecha. Igual que los dos métodos anteriores, estos indican como menor al string que va antes alfabéticamente.</p>
+<pre><code>1 &lt;= 2
+=&gt; true
+
+1 &gt;= 2
+=&gt; false
+
+1 &lt;= 1
+=&gt; true
+
+&quot;perro&quot; &gt;= &quot;gato&quot;
+=&gt; true
+
+&quot;gato&quot; &lt;= &quot;gato&quot;
+=&gt; true
+</code></pre><p>Hay un método más de comparación especial que no devuelve un valor booleano. El método es <code>&lt;=&gt;</code>. Este método devuelve <code>-1</code> si el objeto de la izquierda es menor que el de la derecha, <code>0</code> si son iguales y <code>1</code> si el objeto de la derecha es menor que el de la izquierda.</p>
+<pre><code>1 &lt;=&gt; 2
+=&gt; -1
+
+1 &lt;=&gt; 1
+=&gt; 0
+
+1 &lt;=&gt; 0
+=&gt; 1
+</code></pre><h2 id="operador-negaci-n">Operador negación</h2>
+<p>El operador <code>!</code> cambia un valor booleano por su contrario. Convierte las expresiones que dan como resultado <code>true</code> en <code>false</code> y viceversa.</p>
+<pre><code>!true
+=&gt; false
+
+!false
+=&gt; true
+
+1 &gt; 2
+=&gt; false
+
+!(1 &gt; 2)
+=&gt; true
+
+!1
+=&gt; false
+</code></pre><p>Si se usa <code>!</code> dos veces seguidas siempre se obtiene el valor booleano real de la expresión.</p>
+<pre><code>!!(1 &gt; 2)
+=&gt; true
+
+!!false
+=&gt; false
+
+!!1
+=&gt; true
+</code></pre><h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_06.html">Learn to program</a>.</li>
+<li><a href="https://rubymonk.com/learning/books/4-ruby-primer-ascent/chapters/45-more-classes/lessons/105-equality_of_objects">Ruby Monk</a>.</li>
+<li><a href="http://www.techotopia.com/index.php/Ruby_Operators">Techotopia</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
