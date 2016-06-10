@@ -72,8 +72,33 @@
 
 1 &lt;=&gt; 0
 =&gt; 1
-</code></pre><h2 id="operador-negaci-n">Operador negación</h2>
-<p>El operador <code>!</code> cambia un valor booleano por su contrario. Convierte las expresiones que dan como resultado <code>true</code> en <code>false</code> y viceversa.</p>
+</code></pre><h2 id="operadores-booleanos">Operadores booleanos</h2>
+<p>Los operadores booleanos pueden modificar el resultado de una expresión booleana.</p>
+<h3 id="and">AND</h3>
+<p>El operador booleano AND se escribe en Ruby usando <code>&amp;&amp;</code> o la palabra clave <code>and</code>. Este operador se usa entre dos expresiones booleanas. Devuelve <code>true</code> sólo si las dos expresiones devuelven <code>true</code>. Si alguna de ellas devuelve <code>false</code>, el operador AND devolverá <code>false</code>.</p>
+<pre><code>1 &gt; 0 &amp;&amp; 1 &lt; 2
+=&gt; true
+
+1 &gt; 0 &amp;&amp; 1 &gt; 2
+=&gt; false
+
+1 &gt; 0 &amp;&amp; 1 &lt; 2 &amp;&amp; 3 &lt; 2
+=&gt; false
+</code></pre><h3 id="or">OR</h3>
+<p>El operador OR se escribe usando <code>||</code> o la palabra clave <code>or</code>. Este operador se usa entre dos expresiones booleanas, igual que el AND. Devuelve <code>true</code> si alguna de las dos expresiones devuelve <code>true</code>. Sólo devuelve <code>false</code> si las dos expresiones devuelven <code>false</code>.</p>
+<pre><code>1 &gt; 0 || 1 &lt; 2
+=&gt; true
+
+1 &gt; 0 || 1 &gt; 2
+=&gt; true
+
+1 &gt; 2 || 3 &lt; 2
+=&gt; false
+
+(1 &gt; 0 &amp;&amp; 1 &lt; 2) || 3 &lt; 2
+=&gt; true
+</code></pre><h3 id="not">NOT</h3>
+<p>El operador NOT se escribe <code>!</code>. Lo que hace es convertir un valor booleano en su contrario. Convierte las expresiones que dan como resultado <code>true</code> en <code>false</code> y viceversa.</p>
 <pre><code>!true
 =&gt; false
 

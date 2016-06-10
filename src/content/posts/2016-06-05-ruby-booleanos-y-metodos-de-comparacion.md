@@ -1,7 +1,7 @@
 ---
 title: "Ruby: booleanos y métodos de comparación"
 date: 2016-06-05
-tags: ruby, methods
+tags: ruby, booleans, comparisons
 template: post.html
 ---
 
@@ -86,9 +86,46 @@ Hay un método más de comparación especial que no devuelve un valor booleano. 
 => 1
 ```
 
-## Operador negación
+## Operadores booleanos
 
-El operador `!` cambia un valor booleano por su contrario. Convierte las expresiones que dan como resultado `true` en `false` y viceversa.
+Los operadores booleanos pueden modificar el resultado de una expresión booleana.
+
+### AND
+
+El operador booleano AND se escribe en Ruby usando `&&` o la palabra clave `and`. Este operador se usa entre dos expresiones booleanas. Devuelve `true` sólo si las dos expresiones devuelven `true`. Si alguna de ellas devuelve `false`, el operador AND devolverá `false`.
+
+```
+1 > 0 && 1 < 2
+=> true
+
+1 > 0 && 1 > 2
+=> false
+
+1 > 0 && 1 < 2 && 3 < 2
+=> false
+```
+
+### OR
+
+El operador OR se escribe usando `||` o la palabra clave `or`. Este operador se usa entre dos expresiones booleanas, igual que el AND. Devuelve `true` si alguna de las dos expresiones devuelve `true`. Sólo devuelve `false` si las dos expresiones devuelven `false`.
+
+```
+1 > 0 || 1 < 2
+=> true
+
+1 > 0 || 1 > 2
+=> true
+
+1 > 2 || 3 < 2
+=> false
+
+(1 > 0 && 1 < 2) || 3 < 2
+=> true
+```
+
+### NOT
+
+El operador NOT se escribe `!`. Lo que hace es convertir un valor booleano en su contrario. Convierte las expresiones que dan como resultado `true` en `false` y viceversa.
 
 ```
 !true
