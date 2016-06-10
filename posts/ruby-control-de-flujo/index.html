@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: control de flujo | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-control-de-flujo">Ruby: control de flujo</h1>
+<p>El control de flujo se usa para ejecutar algunas partes del código teniendo en cuenta unas condiciones. A las construcciones de control de flujo también se las llama condicionales.</p>
+<p>Ruby tiene la construcción condicional <code>if</code>. Un <code>if</code> evalua una expresión para conseguir un valor booleano. Si la expresión da como resultado <code>true</code>, se ejecuta el código que hay dentro del <code>if</code>.</p>
+<p>Los <code>if</code> se cierran poniendo la palabra clave <code>end</code> al final. Todo el código entre el <code>if</code> y su <code>end</code> sólo se ejecuta si la expresión que se pasa al <code>if</code> devuelve <code>true</code>.</p>
+<pre><code>if 1 &gt; 0
+  puts &quot;1 es mayor que 0&quot;
+end
+
+if 1 &lt; 0
+  puts &quot;1 es menor que 0&quot;
+end
+</code></pre><p>En el ejemplo, siempre se ejecuta el método <code>puts</code> que está dentro del primer <code>if</code>. Esto es porque la expresión <code>1 &gt; 0</code> devuelve el valor <code>true</code>. El código que está dentro del segundo <code>if</code> nunca se ejecutará porque la expresión devuelve <code>false</code>.</p>
+<p>Los <code>if</code> también tienen la construcción <code>else</code>. El  <code>else</code> se ejecuta siempre que la expresión del <code>if</code> de como resultado <code>false</code>. Cuando se usa <code>else</code>, el <code>if</code> se cierra con <code>end</code> después del código del <code>else</code>.</p>
+<pre><code>if 1 &lt;= 0
+  puts &quot;1 es menor o igual que 0&quot;
+else
+  puts &quot;1 es mayor que 0&quot;
+end
+</code></pre><p>También se puede usar <code>elsif</code> para comprobar otra expresión en caso de que la que contiene el <code>if</code> sea <code>false</code>.</p>
+<pre><code>puts &quot;Escribe un número&quot;
+num1 = gets.chomp.to_i
+
+puts &quot;Escribe otro número&quot;
+num2 = gets.chomp.to_i
+
+if num1 &lt; num2
+  puts &quot;#{num1} es menor que #{num2}&quot;
+elsif num1 &gt; num2
+  puts &quot;#{num1} es mayor que #{num2}&quot;
+else
+  puts &quot;#{num1} es igual que #{num2}&quot;
+end
+</code></pre><p>En este ejemplo, se pide al usuario que introduzca dos números. El primer número se guarda en <code>num1</code>, el segundo en <code>num2</code>. Después usando un <code>if</code> con un <code>elsif</code> y un <code>else</code>, imprime en la consola si el primer número es mayor que el segundo.</p>
+<p>Los <code>if</code> se pueden poner dentro de otros <code>if</code> para hacer dos comprobaciones distintas.</p>
+<pre><code>puts &quot;Escribe un número&quot;
+num = gets.chomp.to_i
+
+if num &gt; 10
+  if num &lt; 20
+    puts &quot;tu número está entre 10 y 20&quot;
+  else
+    puts &quot;tu número es mayor o igual que 20&quot;
+  end
+else
+  puts &quot;tu número es menor o igual a 10&quot;
+end
+</code></pre><p>Se pueden usar los operadores booleanos para evaluar varias expresiones en un <code>if</code>.</p>
+<pre><code>puts &quot;Escribe un número&quot;
+num = gets.chomp.to_i
+
+if num &gt; 10 &amp;&amp; num &lt; 20
+  puts &quot;tu número está entre 10 y 20&quot;
+elsif num &gt;= 20
+  puts &quot;tu número es mayor o igual que 20&quot;
+else
+  puts &quot;tu número es menor o igual a 10&quot;
+end
+</code></pre><h2 id="construcci-n-unless">Construcción unless</h2>
+<p>El <code>unless</code> es el contrario de un <code>if</code>. El código dentro de una construcción <code>unless</code> se ejecutará siempre que la expresión de cómo resultado  <code>false</code>. Se puede usar <code>else</code> con un <code>unless</code> igual que con un <code>if</code>. Pero no se puede usar <code>elsif</code>.</p>
+<pre><code>unless 0 &gt; 1
+  puts &quot;1 es mayor que 0&quot;
+else
+  puts &quot;1 es menor o igual que 0&quot;
+end
+</code></pre><p>Se puede conseguir el mismo resultado que en un <code>unless</code> usando el operador de negación sobre la expresión de un <code>if</code>.</p>
+<pre><code>if !(0 &gt; 1)
+  puts &quot;1 es mayor que 0&quot;
+else
+  puts &quot;1 es menor o igual que 0&quot;
+end
+</code></pre><h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_06.html">Learn to program</a>.</li>
+<li><a href="https://rubymonk.com/learning/books/1-ruby-primer/chapters/8-control-structures/lessons/41-conditions-using-the-if-statement">Ruby Monk</a>.</li>
+<li><a href="http://www.techotopia.com/index.php/Ruby_Flow_Control">Techotopia</a>.</li>
+</ul>
+
+  </article>
+    </main>
+  </body>
+</html>
