@@ -2,10 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://jrruiz.es/</loc>
-    <lastmod>2016-06-10</lastmod>
+    <lastmod>2016-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+    <url>
+      <loc>http://jrruiz.es/posts/ruby-bucles</loc>
+      <lastmod>2016-06-15</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
     <url>
       <loc>http://jrruiz.es/posts/ruby-control-de-flujo</loc>
       <lastmod>2016-06-10</lastmod>
@@ -139,13 +145,13 @@
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>http://jrruiz.es/posts/javascript-expresiones-de-funci-n</loc>
+      <loc>http://jrruiz.es/posts/javascript-diferencias-entre-llamadas-a-funciones-m-todos-y-constructores</loc>
       <lastmod>2015-07-12</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>http://jrruiz.es/posts/javascript-diferencias-entre-llamadas-a-funciones-m-todos-y-constructores</loc>
+      <loc>http://jrruiz.es/posts/javascript-expresiones-de-funci-n</loc>
       <lastmod>2015-07-12</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
