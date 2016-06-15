@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby: bucles | jrruiz</title>
+  </head>
+  <body>
+    <header>
+      <p><a href="/">jrruiz</a></p>
+    </header>
+    <main>
+  <article>
+    <h1 id="ruby-bucles">Ruby: bucles</h1>
+<p>Los bucles sirven para ejecutar código un número determinado de veces.</p>
+<p>El bucle más básico en Ruby es el <code>while</code>. El bucle <code>while</code> ejecuta el código que hay dentro de él mientras la expresión que recibe sea <code>true</code>. Cuando la expresión que recibe <code>while</code> devuelve <code>false</code>, deja de repetirse y se continúa con la ejecución del resto del programa.</p>
+<pre><code>i = 1
+
+while i &lt;= 10
+  puts i
+  i = i + 1
+end
+
+puts &quot;FIN&quot;
+</code></pre><p>El ejemplo imprime los números del 1 al 10. Cuando termina el bucle imprime el string <code>&quot;FIN&quot;</code>.</p>
+<h2 id="bucle-until">Bucle until</h2>
+<p>El bucle <code>until</code> se ejecuta hasta que la condición sea <code>true</code>. Otra forma de ver cómo se ejecuta este bucle es mientras la condición sea <code>false</code>.</p>
+<pre><code>i = 1
+
+until i &gt; 10
+  puts i
+  i = i + 1
+end
+
+puts &quot;FIN&quot;
+</code></pre><p>Este ejemplo es igual que el del <code>while</code>. Imprime los números del 1 al 10 y al terminar imprime <code>&quot;FIN&quot;</code>.</p>
+<h2 id="bucle-for">Bucle for</h2>
+<p>El bucle <code>for</code> ejecuta el código una vez por cada elemento que tenga la expresión que recibe. La expresión puede ser un rango de números, un array o un hash.</p>
+<pre><code>for i in 1..10
+  puts i
+end
+</code></pre><p>En el ejemplo se crea un rango de números del 1 al 10. El bucle <code>for</code> va asignando por orden estos números a la variable <code>i</code>. Se imprime cada número que se asigna a <code>i</code>. Al final, el programa habrá imprimido los números del 1 al 10.</p>
+<h2 id="bucle-loop">Bucle loop</h2>
+<p>El bucle <code>loop</code> se ejecuta de forma infinita. La única forma de parar su ejecución es usando la expresión <code>break</code>. El código que va a ejecutar <code>loop</code> se pone entre la palabra clave <code>do</code> y <code>end</code>.</p>
+<pre><code>loop do
+  puts &quot;Infinito&quot;
+end
+</code></pre><p>El bucle del ejemplo imprimirá el string <code>&quot;Infinito&quot;</code> para siempre si no se para el programa de forma forzada.</p>
+<pre><code>i = 1
+
+loop do
+  puts i
+  i = i + 1
+
+  if i &gt; 10
+    break
+  end
+end
+
+puts &quot;FIN&quot;
+</code></pre><p>En este ejemplo se ejecuta el bucle hasta que la variable <code>i</code> sea mayor que 10. En ese momento se ejecuta la expresión <code>break</code> que hace que pare el bucle. Después de parar el bucle se imprime el string <code>&quot;FIN&quot;</code>.</p>
+<h2 id="modificar-bucles">Modificar bucles</h2>
+<p>Hay algunas expresiones que modifican el comportamiento normal de un bucle. Pueden hacer que el bucle termine antes de lo normal, que se reinicie o que se salte alguna iteración.</p>
+<h3 id="break">Break</h3>
+<p><code>break</code> hace que el bucle termine.</p>
+<pre><code>for i in 1..10
+  if i &gt; 5
+    break
+  end
+
+  puts i
+end
+</code></pre><p>Este bucle imprime los números del 1 al 5. Los restantes hasta el 10 no se imprimen porque cuando <code>i</code> es mayor que 5, se ejecuta un <code>break</code> que hace que termine el bucle.</p>
+<h3 id="next">Next</h3>
+<p><code>next</code> hace que el bucle salte a la siguiente iteración.</p>
+<pre><code>for i in 1..10
+  if i == 5
+    next
+  end
+
+  puts i
+end
+</code></pre><p>Este bucle imprime los números del 1 al 10, pero se salta el 5. Cuando la variable <code>i</code> es igual a 5, se ejecuta <code>next</code> que hace que el bucle pase a la siguiente iteración.</p>
+<h3 id="redo">Redo</h3>
+<p><code>redo</code> hace que el bucle vuelva a ejecutar la iteración actual.</p>
+<pre><code>for i in 1..10
+  puts i
+
+  if i == 3
+    redo
+  end
+end
+</code></pre><p>Este bucle imprime los números del 1 al 3. Cuando la variable <code>i</code> es igual a 3, se ejecuta <code>redo</code> que hace que el bucle vuelva a ejecutar la iteración con el valor 3. Esto hace que se vuelva a imprimir el número 3 de forma infinita.</p>
+<h2 id="fuentes">Fuentes</h2>
+<ul>
+<li><a href="https://pine.fm/LearnToProgram/chap_06.html">Learn to program</a>.</li>
+<li><a href="https://rubymonk.com/learning/books/1-ruby-primer/chapters/8-control-structures/lessons/44-loops-in-ruby">Ruby Monk</a>.</li>
+<li><a href="http://www.tutorialspoint.com/ruby/ruby_loops.htm">Tutorials Point</a>.</li>
+<li><a href="http://ruby.bastardsbook.com/chapters/loops/">The Bastards Book of Ruby</a>.</li>
+</ul>
+
+  </article>
+    </main>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-79173534-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+  </body>
+</html>
